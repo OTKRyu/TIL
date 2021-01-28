@@ -2,10 +2,14 @@
 ## 시작
 - `git init` : 폴더를 깃에 올릴 수 있는 폴더로 변경
 - `git remote origin 'https~'` : 깃 폴더를 온라인 상의 어디와 연결할 것인지를 설정
+- `git config user.name` : 깃 폴더에 찍을 인장의 내용중 이름을 설정
+- `git config user.email ` : 깃 폴더에 찍을 인장의 내용 중 이메일을 설정
+  - 공통적으로 --global을 쓰고 user를 치면 공통적으로 계속 쓸 고정된 인장을 생성.
 
 ## 조회
 - `git log` : commit들을 보여줌
 - `git reflog` : commit들과 HEAD의 이동들을 축약해 보여줌
+- `git remote -v` : 저장된 remote들을 보여줌
 
 ## 입력
 - `git add 'foldername'` : 대상을 staging
@@ -14,7 +18,8 @@
 
 ## 출력
 - `git pull` : clone으로 가져온 git 폴더의 commit 내용을 받아옴
-- `git clone 'https~' : 웹상의 git폴더를 내 컴퓨터에 폴더로 받아옴
+- `git clone 'https~'` : 웹상의 git폴더를 내 컴퓨터에 폴더로 받아옴
+  - 이 때 url을 잘 보면 앞에 받아올 파일 이름과 뒤에 저장할 이름이 나오는데 이를 수정하면 저장할때 이름을 바꿔서 저장할 수 있다.
 
 ## 수정
 - `git restore` : staging된 내용을 되돌림
@@ -37,3 +42,7 @@
 		- vscode가 이를 좀 편하게 할 수 있도록 편의기능을 제공함
 	- 위의 병합을 사용했을 때 각 branch의 commit들을 모두 가지고 오고 시간순으로 배열해 보여줌.
 - `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용
+
+## remote 관련
+- `git remote add name url` : name으로 url을 저장
+
