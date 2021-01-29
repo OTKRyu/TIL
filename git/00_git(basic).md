@@ -1,7 +1,7 @@
 # git
 ## 시작
 - `git init` : 폴더를 깃에 올릴 수 있는 폴더로 변경
-- `git remote origin 'https~'` : 깃 폴더를 온라인 상의 어디와 연결할 것인지를 설정
+- `git remote add origin 'https~'` : 온라인 상의 주소를 origin이라는 이름으로 저장
 - `git config user.name` : 깃 폴더에 찍을 인장의 내용중 이름을 설정
 - `git config user.email ` : 깃 폴더에 찍을 인장의 내용 중 이메일을 설정
   - 공통적으로 --global을 쓰고 user를 치면 공통적으로 계속 쓸 고정된 인장을 생성.
