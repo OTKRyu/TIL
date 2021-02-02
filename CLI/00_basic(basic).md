@@ -2,7 +2,7 @@
 
 ## 뜻
 
-
+Command-line interface의 약자로 말그대로 명령어 한줄씩 써서 작동하는 접점을 의미한다.
 
 ## 폴더(directory) 관련
 

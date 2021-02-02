@@ -8,6 +8,7 @@
 
 ## 조회
 - `git log` : commit들을 보여줌
+- `git lg` : 요약된 commit들을 보여줌
 - `git reflog` : commit들과 HEAD의 이동들을 축약해 보여줌
 - `git remote -v` : 저장된 remote들을 보여줌
 
@@ -44,5 +45,8 @@
 - `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용
 
 ## remote 관련
+
+웹상에 올려놓은 branch로 local branch보다 상위 권한을 지니며 결국 remote의 branch를 기준으로 일을 진행하게 된다.
+
 - `git remote add name url` : name으로 url을 저장
 
