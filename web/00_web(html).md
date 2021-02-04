@@ -55,8 +55,10 @@ hyper text markup language의 약자
 - `inline level`
   - 글자가 차지하는 부분까지만 차지하는 요소, 일반적으로 생각했을 때의 줄글에 해당
   - 태그들 안에서도 사용할 수 있다. 반대로 inline level의 자식으로 block level을 넣을 수는 없다.
+  - iline level의 요소들을 한 줄에 늘어놨다면 그 때는 유일하게 html에서 enter와 space가 작동하는 순간이다. 이것도 브라우저가 자동으로 인식해서 해주는 부분이다.
 - `block level`
   - 줄 하나의 전체를 차지하는 요소, 대부분의 태그들이 block level이므로 inline일 경우만 표기
+- 대부분의 태그가 클로징 태그를 가지고 있지만, 때때로 클로징 태그 없이 스스로 종료하는 self-closing태그들도 있다.
 
 ### html의 글로벌 태그
 
@@ -102,6 +104,7 @@ hyper text markup language의 약자
     - `href="주소"` : 이어질 곳의 주소를 적는 곳이다.
     - `target = "_blank"` : 기본적으로 현재 탭에서 이동하는데, 이 설정으로 써주면 새 탭으로 열어짐 
     - `hover` : 마우스를 올렸을 때 벌어지는 일
+    - inline요소지만 그 안에 block요소도 넣을 수 있다.
   - `<p>` 태그
     - paragraph의 약자로 본문의 내용을 넣는 곳이다.
     - `lorem`이라는 명령어로 더미 문단을 만들 수 있다.
@@ -146,7 +149,7 @@ hyper text markup language의 약자
    1. h1 태그
    2. a 태그
 
-### vscode가 제공하는 편의기능
+### vscode가 제공하는 편의기능 및 팁
 
 - `!tab`을 누르면 기본적인 것들을 채워준 기본 골자를 바로 써준다.
 - 꺾쇠를 열 필요없이 태그이름만 쓰고 탭하면 알아서 잘 완성해준다.
@@ -162,7 +165,7 @@ open in browser 확장 프로그램을 받으면 alt + b를 누르면 바로 브
 .box.col{$}*3
 ```
 
-
+#은 placeholder라고 해서 작동은 하지만 아무일도 안 일어나는 것을 만들고 싶을때 임시로 넣어둔다.
 
 ## http
 
