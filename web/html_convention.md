@@ -7,3 +7,4 @@
 - target의 속성을 적을 때는 _로 시작하는 것이 관례다.
 - class는 space를 기준으로 구분
 - 클래스이름을 지을때 이름을 지을 때는 -를 쓰는 것이 관습이다.
+- js id convention은 python class convention과 비슷하고 html과는 다르기 때문에 구분해서 볼 필요가 있다.
