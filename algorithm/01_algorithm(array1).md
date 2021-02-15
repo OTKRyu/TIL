@@ -60,6 +60,23 @@ def bubble_sort(a):
   
 
 - selection
+
+  - 가장 작은 값의 원소부터 차례대로 선택하여 맨 앞의 원소와 교환하고 다음번에는 맨 앞의 원소를 제외하고 진행하여 완성
+  - 복잡도 n^2
+  - 교환의 횟수가 적다.
+
+```python
+def selection_sort(a):
+    for i in range(len(a) - 1):
+        min = i
+        for j in range(i+1, len(a)):
+            if a[min] > a[j]:
+                min = j
+        a[i], a[min] = a[min], a[i]
+```
+
+
+
 - quick
 - insetion
 - merge
