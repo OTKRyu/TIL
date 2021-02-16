@@ -66,3 +66,10 @@ for i in range(4):
 - `<<` : 비트 열을 왼쪽으로 이동( 1<<n: 1을 n만큼 비트단위 왼쪽으로 이동, 나타내는 값은 결국 2^n)
 - `>>` : 비트 열은 오른쪽으로 이동
 
+```python
+for i in range(1<<len(arr)):
+    for j in range(len(arr)):
+        if i & (1<<j):
+            #부분집합마다 할 내용
+```
+
