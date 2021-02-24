@@ -78,6 +78,32 @@ def selection_sort(a):
 
 
 - quick
+  - 주어진 배열을 두 개로 분할한 뒤 각각을 정렬
+  - 분할할 때 기준 아이템(pivot item)을 기준으로 작은 것은 왼편, 큰 것은 오른편에 위치
+  - 평균 시간 복잡도 nlogn 최악의 경우 n^2
+
+```python
+def quick_sort(a, begin, end):
+    if begin < end:
+        p = partition(a, begin, end)
+        quick_sort(a, begin, p-1)
+        quickSort(a, p+1, end)
+def partition(a, begin, end): # 호어 파티션
+    pivet = (bigin + end) //2
+    l = begin
+    r = end
+    while l<r:
+        while(a[l]<a[pivot] and l<r) : l+=1
+        while(a[r]>=a[pivot] and l<r) : r -= 1
+        if l<r:
+            if l==pivot: pivot = r
+                a[l],a[r] = a[r], a[l]
+    a[pivot], a[r] = a[r], a[pivot]
+    return r
+```
+
+
+
 - insetion
 - merge
 
