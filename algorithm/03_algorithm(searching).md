@@ -105,28 +105,28 @@ dfs(v):
 	}
 ```
 
-```
+```python
 # psudo code by recursion
-dfs_recursive(g, v)
-	visited[v] = True
-	for each all w in adjacency(g, v)
-		if visited[w] != True
+def dfs_recursive(g, v):
+    visited[v] = True
+	for w in adjacency(g, v)
+		if visited[w] != True:
 			dfs_recursive(g, w)
 ```
 
-```
+```python
 # psudo code by repeat
-stack s
-visited []
-dfs(v)
-	push(s,v)
-	while not isempty(s)
-		v = pop(s)
+stack = []
+visited = []
+def dfs(v):
+    stack.append(v)
+	while stack:
+		v = stack.pop()
 		if not visited[v]
-			visit(v)
-			for each w in adjacency(v)
+			visit(v)  #v에서 해야할 일
+			for w in adjacency(v)
 				if not visited[w]
-					push(s, w)
+					s.push(w)
 ```
 
 ###  bfs(너비 우선 탐색)
@@ -148,6 +148,40 @@ def bfs(g,v):
         for i in g[t]:
             if not visited[i]:
                 queue.append(i)
-                visitied[i] = True
+                visited[i] = True
+                
+def BFS_with_distance(queue): # 거리에 따라 다른 연산을 해줘야 할경우 이런식으로 짠 후 조정하면 된다.
+    while 1:
+        new_queue = []
+        while queue:
+            v = queue.pop(0)
+            visited[v] = 1
+            for i in g[v]:
+                if not visited[i]:
+                    new_queue.append(i)
+                    visited[i] = 1
+        if new_queue:
+            queue = new_queue
+        else:
+            break
+```
+
+```python
+'''
+단순 BFS는 하나의 큐에 모든 정점을 넣어가면서 탐색을 하지만, 이렇게 짤 경우 거리가 같은 것들의 탐색이 끝날때마다 심도가 깊어지면서 거리가 같은 것들에게만 어떤 연산을 할 경우에 쓸 수가 있다.
+'''
+def BFS_recursion_with_depth(g, queue):
+    possibles = []
+    while queue:
+        v = queue.pop(0)
+        visited[v] = 1
+        for i in g[v]:
+            if not visited[i]:
+                possibles.append(i)
+                visiited[i] = 1
+    if possibles:
+        BFS_recursion_with_depth(g, possibles)
+    else:
+        return
 ```
 
