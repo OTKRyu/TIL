@@ -121,15 +121,18 @@ hyper text markup language의 약자
   - `<i>` (inline level): 이탤릭체인데 `<em>`이 나오고 나서 icon의 역할로 옮겨간 편이다.
   - `<em>` (inline level): `<i>`와 같지만 강조의 시맨틱 태그
 - `<form>` 태그 : 서버와의 연결을 통해 해야될 일들을 모아놓은 태그
-  - `<input>` : 입력을 받는 태그, 속성마다 다른 점들이 있으므로 숙지하고 사용해야 한다.(inline level)
-    - `type = "text"` : 단순 text를 받는 input
-    - `type = "password"` : 비밀번호를 받는 input
-    - `type = "submit"` : 제출용 input 버튼을 만들어준다.
-    - `placeholder` : 내용이 없을시에 띄울 문구
-    - `name` : 서버가 받은 정보를 어떤 이름으로 저장할지에 대해 지정
-    - `value` : 입력값을 실제로 저장하는 곳, 써서 구동시키면 미리 써져 있다.
-    - `aria-describedby` : id를 쓰는 곳으로 그 id가 쓰인 개체로 이동해 추가정보를 읽어준다.
-  - `<label>` : 객체에 라벨을 붙이는 역할을 하는 명령어로 for값에 id를 어떻게 연결하느냐에 따라 어느 것에 라벨을 붙일 것인지를 정할 수 있다.
+  - `action` : 전송될 url지정
+  - `method`: 입력 데이터 전달 방식 지정
+  - 하위 태그
+    - `<input>` : 입력을 받는 태그, 속성마다 다른 점들이 있으므로 숙지하고 사용해야 한다.(inline level)
+      - `type = "text"` : 단순 text를 받는 input
+      - `type = "password"` : 비밀번호를 받는 input
+      - `type = "submit"` : 제출용 input 버튼을 만들어준다.
+      - `placeholder` : 내용이 없을시에 띄울 문구
+      - `name` : 서버가 받은 정보를 어떤 이름으로 저장할지에 대해 지정, 서버로 갔을 때는 데이터의 키값 역할을 한다.
+      - `value` : 입력값을 실제로 저장하는 곳, 써서 구동시키면 미리 써져 있다.
+      - `aria-describedby` : id를 쓰는 곳으로 그 id가 쓰인 개체로 이동해 추가정보를 읽어준다.
+    - `<label>` : 객체에 라벨을 붙이는 역할을 하는 명령어로 for값에 id를 어떻게 연결하느냐에 따라 어느 것에 라벨을 붙일 것인지를 정할 수 있다.
 - 리스트 태그 
   - `<ol>` : 순서가 있는 리스트
     - `<li>` : 리스트 안의 한 줄
@@ -172,7 +175,16 @@ open in browser 확장 프로그램을 받으면 alt + b를 누르면 바로 브
 
 ## http
 
-hyper text transfer protocol의 약자
+- hyper text transfer protocol의 약자
+
+- 웹에서의 데이터 교환의 기초
+- 원하는 작업을 나타내는 request methods를 정의
+- http request method 종류
+  - get, post, put, delete 등등
+  - get(method의 기본값이여서 굳이 써줄필요 없지만, 써주는것이 좋다. 대문자가 관습)
+    -  서버의 정보를 조회할 때 사용
+    -  데이터를 가져올 때만 사용해야 함
+    -  body가 아닌 query string parameters를 통해 전송
 
 ## ogp
 
@@ -185,3 +197,4 @@ html의 head부분에서 정보를 가져와 단순한 링크주소만이 아니
 
 ## mdn
 모질라에서 제공하는 html에 대한 정보들로 표준에 가장 가까운 정보들로 참고할 때는 이쪽을 참고하는 것이 좋다.
+
