@@ -122,7 +122,9 @@ hyper text markup language의 약자
   - `<em>` (inline level): `<i>`와 같지만 강조의 시맨틱 태그
 - `<form>` 태그 : 서버와의 연결을 통해 해야될 일들을 모아놓은 태그
   - `action` : 전송될 url지정
-  - `method`: 입력 데이터 전달 방식 지정
+  - `method`: 입력 데이터 전달 방식 지정(get, post 두 종류)
+    - get : 모든 데이터가 url에 공개되어 전송
+    - post : 데이터가 url에 공개되지 않음
   - 하위 태그
     - `<input>` : 입력을 받는 태그, 속성마다 다른 점들이 있으므로 숙지하고 사용해야 한다.(inline level)
       - `type = "text"` : 단순 text를 받는 input

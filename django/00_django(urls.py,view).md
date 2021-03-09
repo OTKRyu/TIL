@@ -34,23 +34,24 @@ dynamic web application program
 
 ### project folder(혹은 master app)
 - `__init__.py` : 이 파일이 이 프로젝트가 파이썬 패키지라는 것을 알려준다.
-
 - `settings.py` : django의 모든 세팅이 들어있는 파일
-  
+
   - internationalization : 국제화 관련 코드로 언어 및 국가별 다른 것들을 설정할 수 있다.
     - language_code : 언어 설정
     - time_zone : 기본값은 utc, 데이터베이스의 기준 시간을 정해준다. 이 때 대륙/도시이름 순으로 입력을 해주면 도시의 시간에 맞춰서 기준이 설정된다.
-  
+  - installed_apps : 설치된 앱들을 나타내는 리스트
+    - 이 앱들을 탐색할 때 이 리스트의 순서대로 그냥 탐색해서 선착순으로 가져오기 때문에, 같은 이름을 가진 개체가 다른 앱에 있을 경우 꼬일 수 있다.
+    - 이를 위해 name spacing이 필요하다.
+    - name spacing이란 단순히 같은 이름을 가진 파일들이더라도 어디에 소속되어 있는지를 추가로 적어줌으로서 혼선을 벗어나는 일로서, 그 앱의 이름과 같은 폴더 안에 자료들을 넣어둠으로서 `appname/file` 식으로 찾게 만드는 것이다.
+    - ex) `pages/useful_someting.html` in templates 
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
-  
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
   - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다.
-  
-- `templates` : 앱에 들어갈 base templates를 놓는 곳으로 다른 앱들에서 공통으로 쓸  templates를 가져다놓는다. 이 폴더는 앱과는 다르게 장고가 이를 인식하지 못한다. 즉 새로 경로를 설정해줘야만한다. 이 경로를 설정할 때 settings.py에서 `TEMPLATES`의 `DIRS`에 BASE_DIR/'firstpjt'/'templates' 처럼 추가를 해줘야한다. 여기서 BASE_DIR은 프로젝트 생성시의 모든 걸 담고 있는 폴더를 의미한다.
+- `templates` : 앱에 들어갈 base templates를 놓는 곳으로 다른 앱들에서 공통으로 쓸  templates를 가져다놓는다. 이 폴더는 앱과는 다르게 장고가 이를 인식하지 못한다. 즉 새로 경로를 설정해줘야만한다. 이 경로를 설정할 때 settings.py에서 `TEMPLATES`의 `DIRS`에 BASE_DIR/'firstpjt'/'templates' 처럼 추가를 해줘야한다. 이 `DIRS`는 그 아래에 있는 `APP_DIRS`가 찾을 templates폴더 외에 것을 찾을 목록에 추가하는 역할을 한다. 여기서 `BASE_DIR`은 프로젝트 생성시의 모든 걸 담고 있는 폴더를 의미하고, 절대 경로가 바뀌더라도 프로젝트 루트의 위치를 그때마다 잡아주는 역할을 한다. 관습적으로 마스터 앱이나 혹은 프로젝트 root에 만드는 편이다.
 
 ### app(이름은 꼭 '복수형'으로, 생성(startapp) 후에 등록할 것)
 
-- `templates(dir)` : 템플릿을 모아놓는 곳으로서 이는 앱을 만들 때마다 직접 만들어줘야한다.  이를 다른 이름으로 저장하면 django가 이를 인식하지 못하기 때문에 이 이름은 강제가 된다. 그리고 django가 app의 templates까지는 인식하므로, 이 안에서 어떤 파일을 찾을 지를 설정해주면 된다. 
+- `templates(dir)` : 템플릿을 모아놓는 곳으로서 이는 앱을 만들 때마다 직접 만들어줘야한다.  이를 다른 이름으로 저장하면 django가 이를 인식하지 못하기 때문에 이 이름은 강제가 된다. django가 templates를 찾을 때 settings.py에 있는 installed_apps에 있는 앱 안의 templates들을 찾기 때문에 이를 등록해줘야한다. 그렇게 templates라는 폴더를 찾으면, 이 안에서 어떤 파일을 찾을 지를 설정해주면 된다. 
 
 - `admin.py` : 관리자 사이트를 만드는 파이썬 파일
 
@@ -62,13 +63,12 @@ dynamic web application program
 
 - `urls.py` : 이 앱에서 쓸 view함수들을 모아놓은곳
 
-    - 추가적으로 \<str:name>같은 것을 view를 붙여줄 수 있는데, 이를 variable routing(주소자체를 변수처럼 쓰는것)이라고 한다.
+    - 추가적으로 \<str:name>같은 것을 url에 붙여서 보내온 경우 이를 views에 있는 함수에서 인자로 받을 수가 있는데, 이를 variable routing(주소자체를 변수처럼 쓰는것)이라고 한다.
     - 이렇게 하면 request에서 일일히 정보를 뽑아낼 필요없이 url에 적혀있는 정보를 바로 변수로 받아서 함수에다 쓸 수 있다. 
     - str이 기본값이므로 생략가능하다.
 
 - `views.py` : view의 역할을 하는 파일
-
-  - views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
+- views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
   - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다.
 
 ### template
@@ -80,7 +80,7 @@ dynamic web application program
 - DTL이 파이썬이랑 비슷하다, 다만 같은 것은 아니고 파이썬으로 실행되는 것도 아니다.
 
 - DTL
-  1. variable
+  1. variable(사실상 print다)
      - `{{ variable }}` 형식으로 써놓고 render함수에서 template파일을 받을 때 이를 삽입해줌, 중괄호와 변수명 사이를 스페이스로 좀 띄워놓는 것을 권장
      - 밑줄로는 시작 불가,  공백 구두점 또한 사용불가
      - dot(.)을 사용하여 변수 속성에 접근 가능(딕셔너리의 경우 key로, list의 경우 인덱스로 접근가능)(ex)`dict.key`, `list.0`)
@@ -120,7 +120,7 @@ dynamic web application program
 - `python manage.py runserver` : python을 통해 manage.py라는 파일을 실행시키고 서버를 실행한다. 이 때 manage.py라는 파일이 있는 곳에서 실행해야만 올바르게 움직이게 할 수 있다.
 - `python manage.py startapp appname` : python으로 manage.py라는 파일을 실행시키고 appname이라는 이름을 가진 app을 시작한다. 이렇게 하면 app을 만든 세팅이 어느정도 끝나지만, 프로젝트에서 이를 인식하기 위해선 프로젝트의 settings에 appname이라고 추가해주면 된다. 다만 이 때 장고가 앱의 순서에 따라 어느정도까지만 읽을 때가 있으므로 local apps를 가장 먼저, 그 후 third party apps 그리고 django apps순으로 쓰는 편을 권장한다.
 ## django urls
-- dispatcher로서의 url
+- dispatcher로서의 url(uniformed resource locator)
 
 - 웹 어플리케이션은 url을 통한 클라이언트의 요청으로부터 시작
 
@@ -136,4 +136,4 @@ dynamic web application program
 
 이렇게 정의하면 url이 바뀔 때마다 요동치는 구조에서 이름을 통해서 찾아가는 구조로 변하기 때문에 구조가 조금 바뀐 정도로는 기능이 무너지지 않는다.
 
-
+이 때도 templates와 마찬가지로 중복이 날 수 있기 때문에 똑같이 name spacing을 하는데 이 때는 폴더가 아니라 app_name 이란 변수를 urls.py에 추가해 설령 다른 앱에서 같은 이름을 쓰더라도 구분이 될 수 있도록 한다.
