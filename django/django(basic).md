@@ -28,3 +28,13 @@
 4. 아니라면 enter interpreter path, find를 통해 직접 Script폴더 안의 python.exe를 지정
 5. 완료 이후 좌하단에 'python version('venv')' 문구 확인
 6. 프롬프트에 venv 확인
+
+## django convention
+
+- appname/new : 생성 html
+- appname/create : 저장
+- appname/ : 전체 조회
+- appname/id/ : 단일 데이터 조회
+- appname/id/edit/ : 단일 데이터 수정 html
+- appname/id/update/ : 단일 데이터 수정
+- appname/id/delete/ : 단일 데이터 삭제

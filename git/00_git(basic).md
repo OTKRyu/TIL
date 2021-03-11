@@ -1,4 +1,10 @@
 # git
+## convention
+
+git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤션도 필요하기에 여기에 적는다.
+
+대체로 appname.major_change_count.minor_change_count.patch_or_bugfix_count
+
 ## 시작
 - `git init` : 폴더를 깃에 올릴 수 있는 폴더로 변경
 - `git remote add origin 'https~'` : 온라인 상의 주소를 origin이라는 이름으로 저장

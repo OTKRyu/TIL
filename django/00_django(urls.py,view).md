@@ -44,6 +44,7 @@ dynamic web application program
     - 이를 위해 name spacing이 필요하다.
     - name spacing이란 단순히 같은 이름을 가진 파일들이더라도 어디에 소속되어 있는지를 추가로 적어줌으로서 혼선을 벗어나는 일로서, 그 앱의 이름과 같은 폴더 안에 자료들을 넣어둠으로서 `appname/file` 식으로 찾게 만드는 것이다.
     - ex) `pages/useful_someting.html` in templates 
+  - middleware : 구현해놓은 프로그램을 실제로 작동하기 앞서 보내준 요청을 한번 걸러주는 역할을 한다. 보안적인 면에서의 역할을 주로 한다.
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
   - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다.
@@ -68,8 +69,9 @@ dynamic web application program
     - str이 기본값이므로 생략가능하다.
 
 - `views.py` : view의 역할을 하는 파일
-- views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
-  - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다.
+    - views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
+      - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다. 그리고 세번째로 context라는 정보가 담긴 딕셔너리를 넣게 된다.
+      - 추가로 항상 html만을 보내주는것이 아닌 다른 url로 보내는 것을 해야될 때도 있는데 이 경우 render와 같은 패키지에 있는 redirect라는 함수가 필요하다. 이 함수에 `'/practice/'`와 같이 직접 보낼 경로를 쓰거나 또는 urlname을 쓰면 그 쪽으로 이동시켜준다. 인자가 필요한 경우 `argumentname = real_argument`식으로 ,로 연결해 보내면 된다.
 
 ### template
 
@@ -97,6 +99,8 @@ dynamic web application program
      - 일분 태그는 시작과 종료 태그가 필요( `{% tag %}...{% endtag%}`)
      - 24개 정도의 태그가 내장되어 있다.
      - `{% url 'name' %}` : name이라는 이름의 url을 자기가 찾아서 넣어주는 역할을 한다.
+       - 만약 url에 해당하는 path가 추가 arguments를 필요로 한다면 `{% url 'name' argument argument %}` 식으로 넘겨주면 된다.
+       - space로 구분하고 이 인자를 넘기는 것은 파이썬의 함수의 인자를 넘기는 것과 똑같이 기능하기 때문에 순서대로 넘기는 것도 가능하고 키 밸류로 넘기는 것도 가능하다.
      - template inheritance : 템플릿의 기능을 이어받는 기능으로 oop에서의 상속과 같은 개념이다.
        - `{% block content %}~{% endblock%}` : 부모 템플릿에서는 자식에서 바뀔만한 곳(override)을  block으로 지정하고, 자식 템플릿에서는 이 곳에 실제로 코드를 작성해 다르게 만들곳을 만든다.
        - endblock에서도 이름을 붙일 때가 있는데 여러 블록이 중첩되어 있을 경우 구분하기 위해 쓴다.
@@ -116,7 +120,7 @@ dynamic web application program
   - 프로젝트 이름을 만들 때 파이썬 내장함수들과 외부 라이브러리들, 및 장고에서 쓰는 용어들과 겹치는 이름을 쓰면 혼선이 생길 수 있으므로 쓰지 않아야 한다.
   - 하이픈이나 쉼표도 쓸 수 없으므로 언더바를 이용해 써야한다.
   - 이 때 프로젝트 네임 뒤에 .를 찍으면 현재위치에 만들라는 뜻이 되어 필요없는 폴더를 만들 일을 줄여준다.
-- `rm -rf intro/` : 장고 어드민을 통해 만들었던 프로젝트 파일을 그냥 지워서 없앤다.
+- `rm -rf intro/` : 장고 어드민을 통해 만들었던 프로젝트 파일을 그냥 지워서 없앤다. 이게 프로젝트를 없애는 방법이다.
 - `python manage.py runserver` : python을 통해 manage.py라는 파일을 실행시키고 서버를 실행한다. 이 때 manage.py라는 파일이 있는 곳에서 실행해야만 올바르게 움직이게 할 수 있다.
 - `python manage.py startapp appname` : python으로 manage.py라는 파일을 실행시키고 appname이라는 이름을 가진 app을 시작한다. 이렇게 하면 app을 만든 세팅이 어느정도 끝나지만, 프로젝트에서 이를 인식하기 위해선 프로젝트의 settings에 appname이라고 추가해주면 된다. 다만 이 때 장고가 앱의 순서에 따라 어느정도까지만 읽을 때가 있으므로 local apps를 가장 먼저, 그 후 third party apps 그리고 django apps순으로 쓰는 편을 권장한다.
 ## django urls
@@ -136,4 +140,4 @@ dynamic web application program
 
 이렇게 정의하면 url이 바뀔 때마다 요동치는 구조에서 이름을 통해서 찾아가는 구조로 변하기 때문에 구조가 조금 바뀐 정도로는 기능이 무너지지 않는다.
 
-이 때도 templates와 마찬가지로 중복이 날 수 있기 때문에 똑같이 name spacing을 하는데 이 때는 폴더가 아니라 app_name 이란 변수를 urls.py에 추가해 설령 다른 앱에서 같은 이름을 쓰더라도 구분이 될 수 있도록 한다.
+이 때도 templates와 마찬가지로 중복이 날 수 있기 때문에 똑같이 name spacing을 하는데 이 때는 폴더가 아니라 app_name 이란 변수를 urls.py에 추가해 설령 다른 앱에서 같은 이름을 쓰더라도 구분이 될 수 있도록 한다. 이를 실제로 끌어다 쓸때는 app_name:url_name식으로 쓴다.
