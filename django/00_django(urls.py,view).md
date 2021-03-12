@@ -140,4 +140,4 @@ dynamic web application program
 
 이렇게 정의하면 url이 바뀔 때마다 요동치는 구조에서 이름을 통해서 찾아가는 구조로 변하기 때문에 구조가 조금 바뀐 정도로는 기능이 무너지지 않는다.
 
-이 때도 templates와 마찬가지로 중복이 날 수 있기 때문에 똑같이 name spacing을 하는데 이 때는 폴더가 아니라 app_name 이란 변수를 urls.py에 추가해 설령 다른 앱에서 같은 이름을 쓰더라도 구분이 될 수 있도록 한다. 이를 실제로 끌어다 쓸때는 app_name:url_name식으로 쓴다.
+이 때도 templates와 마찬가지로 중복이 날 수 있기 때문에 똑같이 name spacing을 하는데 이 때는 폴더가 아니라 app_name 이란 변수를 urls.py에 추가해 설령 다른 앱에서 같은 이름을 쓰더라도 구분이 될 수 있도록 한다. 이를 실제로 끌어다 쓸때는 {% url 'app_name:url_name'}식으로 쓴다.

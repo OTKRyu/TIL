@@ -29,7 +29,7 @@
 5. 완료 이후 좌하단에 'python version('venv')' 문구 확인
 6. 프롬프트에 venv 확인
 
-## django convention
+## convention
 
 - appname/new : 생성 html
 - appname/create : 저장
