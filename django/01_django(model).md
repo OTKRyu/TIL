@@ -145,11 +145,13 @@ object relational mapping의 약자
 ### 사용법(django admin site)
 
 - `admin.py`에 models를 import한다.
-- `admin.site.register(Article)`처럼 models의 class를 등록한다. 이렇게 하면 admin권한으로 접속했을 때 이 앱의 db까지도 들여다볼 수 있게 된다.
+- `admin.site.register(Article)`이란 명령어로 models의 class를 등록한다. 이렇게 하면 admin권한으로 접속했을 때 이 앱의 db까지도 들여다볼 수 있게 된다.
+  
   - 추가로 admin site의 구조를 바꿔주고 싶다면 class ArticleAdmin를 새로만들어 `admin.ModelAdmin`을 상속받게 한뒤 `list_display`라는 이름의 리스트에 띄울 요소들을 써준다.
   - 그 후에 `admin.site.register(Article, ArticleAdmin)` 으로 추가해주면 인식을 한다.
 - `python manage.py createsuperuser` 를 통해 슈퍼유저를 만든다.
+  
   - 이 때 required는 username과 password이며 나머지는 optional이다.
-  - 이 때 password는 원문으로 저장하지 않고 암호화과정을 거치기 때문에 알아볼 수 없다.
-
+- 이 때 password는 원문으로 저장하지 않고 암호화과정을 거치기 때문에 알아볼 수 없다.
+  
   
