@@ -45,6 +45,7 @@ dynamic web application program
     - name spacing이란 단순히 같은 이름을 가진 파일들이더라도 어디에 소속되어 있는지를 추가로 적어줌으로서 혼선을 벗어나는 일로서, 그 앱의 이름과 같은 폴더 안에 자료들을 넣어둠으로서 `appname/file` 식으로 찾게 만드는 것이다.
     - ex) `pages/useful_someting.html` in templates 
   - middleware : 구현해놓은 프로그램을 실제로 작동하기 앞서 보내준 요청을 한번 걸러주는 역할을 한다. 보안적인 면에서의 역할을 주로 한다.
+  - debug : 이 항목을 true로 해놓고 서버를 돌리면 어떤 에러인지를 상세히 알려준다. 개발단계에서는 켜놓고 하는게 좋지만, 상품발매단계가 되면 필수적으로 꺼야한다. 보안 사항도 전부 보여주기 때문에.
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
   - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다.
@@ -72,6 +73,8 @@ dynamic web application program
     - views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
       - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다. 그리고 세번째로 context라는 정보가 담긴 딕셔너리를 넣게 된다.
       - 추가로 항상 html만을 보내주는것이 아닌 다른 url로 보내는 것을 해야될 때도 있는데 이 경우 render와 같은 패키지에 있는 redirect라는 함수가 필요하다. 이 함수에 `'/practice/'`와 같이 직접 보낼 경로를 쓰거나 또는 urlname을 쓰면 그 쪽으로 이동시켜준다. 인자가 필요한 경우 `argumentname = real_argument`식으로 ,로 연결해 보내면 된다.
+    - `get_objects_or_404 from django.shortcuts import get_objects_or_404(class, kawrgs=value)` : 인자를 받아서 조회를 해보고 결과가 없으면 404페이지를 보내는 함수다. 
+    - 오는 정보의 방법이 get이냐 post냐에 따라서 분기를 해서 같은 페이지에 요청이 오더라도 다른 일을 하도록 시킬 수도 있다. 물론 get이 올 때와 post가 올 때 완전히 다른 일을 시킬 때에만 이런식으로 짜야한다. 혼선이 있을 가능성이 없을 때만.
 
 ### template
 

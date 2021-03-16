@@ -58,7 +58,7 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
 - create
   - 만들어놓은 클래스를 인스턴스에 할당을 하고 인스턴스에 실제 값들을 넣는다.(이 때 생성하고 값들을 넣어줄수도 있고, 생성하면서 바로 넣어줄 수도 있다.)
   - `instancename.save()`를 하면 그제서야 db에 전송되어 쿼리로 등록이 된다.
-  - 혹은 `crearte(title='third',content='django')`와 같이 데이터를 바로 넘겨서 만드는 방법도 있다.
+  - 혹은 `create(title='third',content='django')`와 같이 데이터를 바로 넘겨서 만드는 방법도 있다.
   - sql에서의 동작 원리와 같이 장고에서 만들 때도 받은 정보의 유효성을 검사한다. 이 때 액세스에서 유효성을 직접 설정하던 것과 달리 여기서는 default값이 있으면 유효성에 어긋나더라도 일단 default값을 넣지만, default 설정조차 없을 경우 에러가 난다.
 - read
   - `all()` : 존재하는 모든 쿼리셋을 가져온다.
@@ -90,6 +90,12 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
 
 이 후에 이 구조에 요소에 해당되는 것들이 어떤 타입인지를 고려해 `models`의 안에서 적절한 타입을 찾아서 지정해준다.
 
+이 때 한번 구조가 틀어지면 이를 수정하는 것은 쉽지 않은데 장고의 경우 sqlite를 쓰기 때문에 정 고치지 못하겠고 내부데이터도 별게 없다면 그냥 db.sqlite파일 자체를 삭제해버리면 db를 초기화할 수 있다. 현업에서는 결코 해서는 안 되는 일이지만, 배우는 단계거나 개발단계에서는 이런 식으로 초기화할 수 있다는 것 정도는 알아두면 좋다.
+
+이런 모델을 만들때는 thin control, fat model이라는 지침을 따르는 것이 좋은데, 말 그대로 컨트롤을 하는 부분에서는 쉽고 건드릴게 많지 않게 만들지만, 모델 면에서는 많은 정보량을 쥐고 있게 만드는 것이다.
+
+orm은 models.py 내부의 class에서 class var만 확인하여 db의 column으로 만듬, 즉 그 외에 만드는 것들은 db에는 영향을 주는 것이 없다.
+
 ```python
 from django.db import models
 
@@ -102,8 +108,16 @@ class Article(models.Model):
         return self.title
 ```
 
-- `models.CharField(max_length=)` : 문자를 받는 곳이긴 하지만, 최대치가 정해진 문자를 받을 때 쓰는 class이다. 그러므로 최대치를 필수인자로 가지고 있다. 이 이상의 문자열이 들어온다면 에러가 나거나 아예 받지 않는다.
+- `models.CharField(max_length=)` : 문자를 받는 곳이긴 하지만, 최대치가 정해진 문자를 받을 때 쓰는 class이다. 그러므로 최대치를 필수인자로 가지고 있다. 다만 유효성검사를 이 구간에서 제대로 하진 않는다.
 - `models.TextField()` : 문자를 받는 곳이며, CharField와는 다르게 최대치가 정해져 있지 않은 class이다.  
+- `models.IntegerField()` : 정수를 받는 곳이다.
+- 시간 관련 클래스
+  - 다만 이 클래스들은 장고에서 가지고 있는 시간값을 넣어주는 것이기 때문에 실제 db에 저장된 시간을 가지고 오고 싶다면 sql구문을 사용하여 db의 시간을 가져와야만 한다.
+  - `models.DateTimeField(auto_now_add=True)`  : 여기서는 장고가 가지고 있는 시간을 넣어준다.
+  - `updated_at = models.DateTimeField(auto_now=True)` : 여기서도 장고가 가지고 있는 시간을 넣어준다.
+- 공통 특성
+  - `null=` : `True`로 할 시 빈 값을 받는 것을 허용해준다. 기본값은 false다.
+  - `default=` : 뭔가의 데이터를 지정해놓을 경우, 값이 없을 때 이 디폴트값을 알아서 넣어준다.
 
 ### migrations
 
@@ -114,6 +128,7 @@ class Article(models.Model):
   - `migrate` : 생성된 migration을 db에 반영하기 위해 사용, 이를 통해 모델과 db의 동기화가 이루어짐
   - `sqlmigrate appname num` : appname에 해당하는 num번째 마이그레이션에 대한 sql구문이 어떻게 되는지 보여준다.
   - `showmigrations ` :  마이그레이션파일들이 migrate가 됐는지 안 됐는지 여부를 확인할 때 쓴다. X가 되었다는 뜻이고 빈 것이 안 되었다는 뜻이다.
+- 이 때 장고가 어디까지 migration이 진행이 되었는지를 db.sqlite3에 django_migrations에 저장해놓는다.
 
 ## orm
 
@@ -154,4 +169,59 @@ object relational mapping의 약자
   - 이 때 required는 username과 password이며 나머지는 optional이다.
 - 이 때 password는 원문으로 저장하지 않고 암호화과정을 거치기 때문에 알아볼 수 없다.
   
-  
+## forms
+
+`from django import forms`
+
+앱마다 만들어줘야되는 파일로 이름은 forms.py로 고정해야한다.
+
+models와 문법이 비슷하지만 구성은 완전히 다르기 때문에 이를 주의하며 작성해야한다.
+
+폼을 쓰는 이유는 크게 2가지로
+
+1. data validation
+
+   1. 1차로 html form에서 제한이 걸려있기 때문에 이를 브라우저가 눈치채고 제한대로 만들어지지 않으면 경고를 준다.( 다만 이는 브라우저에서 개발자도구로 얼마든지 변경할 수 있기 때문에 사용자가 권고사항을 따르지 않을 경우를 대비해야한다.)
+
+   2. 2차로 post형식으로 돌아왔을 때 forms의 클래스에 해당하는 인스턴스를 만들때 내용을 미리 채워서 인스턴스를 생성해본다.
+
+      ex) `contact_form = ContactForm(request.POST)`
+
+   3. 그리고 매서드 중 forms.Forms가 가지고 있는 매서드인 `.is_vaild()`라는 매서드를 통해 실제로 유효한지 아닌지를 확인해볼 수 있다.
+
+   4. 더 구체적인 내용을 알고 싶을경우 `.errors`라는 매서ㄴ드를 통해 뭐가 잘못됐는지도 받아볼 수 있다.
+
+2. html easy(입력받기 위한 폼태그를 일일히 html에 칠 필요 없이 클래스만 만들어두면 언제나 쓸 수 있게 된다.)
+
+이다.
+
+forms의 작성방법은 models의 방식과 거의 흡사하다.
+
+양 쪽 모두 data는 request 안에 들어 있는 것을 말한다.
+
+객체를 넘기고 싶을 경우 instance 속성에 할당을 해서 넘겨줘야한다.
+
+데이터와 instance를 동시에 넘길 수 있으며 이렇게 넘겨주면 article의 정보를 request.POST의 데이터로 섞어서 적용해준다.
+
+- forms.Form( ):이걸 쓸 경우 내가 직접 확인할 때나 개별로 쓸 때는 쓸 수 있지만 model과 연동이 되는 것은 아니다.
+
+  - forms 에서는 forms.Form를 상속받은 클래스를 만들게 되는데 이후에 views.py에서 이를 끌고와 쓰게된다.
+  - 이걸 가져와 context에 넣어놓으면 내가 만들어놓은 forms대로 html의 form 구문을 채워주게 된다.
+  - context를 통해 variable을 넣듯이 form 또한 넣으면 된다.
+  - form을 html에 어떤 형식으로 넣을 것이냐할 때, html에 form 입력부에 .as_p로 하면 문단 형식으로 .as_table로 하면 표형식으로 주는 등 여러가지 변형을 줄 수도 있다.
+  - 그 외에도 폼에 해당하는 타입을 줄때 widget이라는 속성을 줘서 보이는 모습을 바꿔줄 수도 있다.
+
+- forms.ModelForm(): 이걸 상속받은 클래스의 서브클래스 meta에 model이 뭔지와 어떤 fields와 연결할 지를 설정해주면 그 model과 연동이 된다.
+
+  - ```python 
+    from .models import Article
+    class ArticleForm(forms.ModelForm):
+        	class meta:
+                model = Article
+                fields = '__all__' # 이 경우 모델에 있는 모든 필드를 폼에 적용하겠다는 뜻이다.
+    ```
+
+  - 연동이 되기 때문에 model에서 하는 일을 실제로 form에서도 할 수 있다. 물론 이 일을 폼이 하는 건 아니고 연결된 모델에 정보를 넘겨줘서 실행하는 것이다. ex) `form.save()`(실제로 form에 폼클래스를 적용하여 하면 모델에서 하듯이 save()가 가능하다.)
+
+    그리고 받을 때도 model처럼 쓸 수가 있는데 이 때 알아서 form에 값에 할당을 해준다.( ex)article.title = 'hi' 면 html로 렌더링할 때 title자리에 value='hi'까지 해준다는 뜻이다.)
+
