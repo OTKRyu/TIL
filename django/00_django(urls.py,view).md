@@ -107,7 +107,8 @@ dynamic web application program
      - template inheritance : 템플릿의 기능을 이어받는 기능으로 oop에서의 상속과 같은 개념이다.
        - `{% block content %}~{% endblock%}` : 부모 템플릿에서는 자식에서 바뀔만한 곳(override)을  block으로 지정하고, 자식 템플릿에서는 이 곳에 실제로 코드를 작성해 다르게 만들곳을 만든다.
        - endblock에서도 이름을 붙일 때가 있는데 여러 블록이 중첩되어 있을 경우 구분하기 위해 쓴다.
-       - `{% extends 'parents path' %} ` : 받아올 부모의 것을 가져온다. 이 태그는 꼭 최상단에 존재해야한다.
+       - `{% extends 'base.html' %} ` : 받아올 부모의 것을 가져온다. 이 태그는 꼭 최상단에 존재해야한다.
+       - 추가적으로 `{% include 'other.html' %}` 을 이용하여 다른 html의 구조를 가져올 수 있다. 이를 이용하여 코드를 다 분리시킬 수 있으며 유지보수를 더 쉽게 만들 수 있다.
   4. comments
      - `{# lorem ipsum #}`
    - 여러 줄의 주석은 `{% comment %} 내용 {%endcomment %}` 활용
