@@ -26,12 +26,6 @@ models와 문법이 비슷하지만 구성은 완전히 다르기 때문에 이�
 
 forms의 작성방법은 models의 방식과 거의 흡사하다.
 
-양 쪽 모두 data는 request 안에 들어 있는 것을 말한다.
-
-객체를 넘기고 싶을 경우 instance 속성에 할당을 해서 넘겨줘야한다.
-
-데이터와 instance를 동시에 넘길 수 있으며 이렇게 넘겨주면 article의 정보를 request.POST의 데이터로 섞어서 적용해준다.
-
 - forms.Form( ):이걸 쓸 경우 내가 직접 확인할 때나 개별로 쓸 때는 쓸 수 있지만 model과 연동이 되는 것은 아니다. 그러므로 특정 모델과 연결된게 아닌 데이터의 유효성만을 확인할 때 쓰게 되며 cleaned_data라는 딕셔너리를 만들게 된다. 유효성 검사 이후는 form에서 하는게 아니라 cleaned_data의 데이터를 이용하여 조작하게 된다.
 
   - forms 에서는 forms.Form를 상속받은 클래스를 만들게 되는데 이후에 views.py에서 이를 끌고와 쓰게된다.
@@ -54,6 +48,12 @@ forms의 작성방법은 models의 방식과 거의 흡사하다.
 
 - forms.ModelForm(): 이걸 상속받은 클래스의 서브클래스 meta에 model이 뭔지와 어떤 fields와 연결할 지를 설정해주면 그 model과 연동이 된다. model을 통해 form class를 만들 수 있는 helper라고도 한다. 모델이 이미 정의되어 있을 때 사용하며, 이 구조자체가 db와 연동되어 있기 때문에 이를 바로 form에서 활용할 수 있다.
 
+  - 양 쪽 모두 data는 request 안에 들어 있는 것을 말한다.
+
+    객체를 넘기고 싶을 경우 instance 속성에 할당을 해서 넘겨줘야한다.
+
+    데이터와 instance를 동시에 넘길 수 있으며 이렇게 넘겨주면 article의 정보를 request.POST의 데이터로 섞어서 적용해준다.
+
   - ```python 
     from .models import Article
     class ArticleForm(forms.ModelForm):
@@ -63,6 +63,8 @@ forms의 작성방법은 models의 방식과 거의 흡사하다.
     ```
 
   - 연동이 되기 때문에 model에서 하는 일을 실제로 form에서도 할 수 있다. 물론 이 일을 폼이 하는 건 아니고 연결된 모델에 정보를 넘겨줘서 실행하는 것이다. ex) `form.save()`(실제로 form에 폼클래스를 적용하여 하면 모델에서 하듯이 save()가 가능하다.)
+
+  - 단순히 연동이 아닌 유효성검사등의 기능을 구현하고 싶다면 forms.Form을 쓸 때처럼 일일히 써줘야한다.
 
     그리고 받을 때도 model처럼 쓸 수가 있는데 이 때 알아서 form에 값에 할당을 해준다.( ex)article.title = 'hi' 면 html로 렌더링할 때 title자리에 value='hi'까지 해준다는 뜻이다.) 이 부분이 어떻게 돌아가는 지에 대해 더 자세히 알고 싶다면 form태그가 어떻게 구성되어 있는지 내부구조를 들여다보길 바란다.
 

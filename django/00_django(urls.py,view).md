@@ -46,6 +46,7 @@ dynamic web application program
     - ex) `pages/useful_someting.html` in templates 
   - middleware : 구현해놓은 프로그램을 실제로 작동하기 앞서 보내준 요청을 한번 걸러주는 역할을 한다. 보안적인 면에서의 역할을 주로 한다.
   - debug : 이 항목을 true로 해놓고 서버를 돌리면 어떤 에러인지를 상세히 알려준다. 개발단계에서는 켜놓고 하는게 좋지만, 상품발매단계가 되면 필수적으로 꺼야한다. 보안 사항도 전부 보여주기 때문에.
+  - MEDIA_ROOT : 여기에 내가 받을 파일의 경로를 저장해 놓으면, 서버에서 파일을 받아올 때 이걸 참고해 원하는 위치에 저장을 해준다.
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
   - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다.
