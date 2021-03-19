@@ -16,3 +16,14 @@ db 자체를 git으로 공유하지는 않지만, 데이터 자체를 json 형�
 
 pair programming으로 진행
 
+# pjt 5
+
+resize 관련 django-imagekit 사용법은 공식문서 참조
+
+processedImageField의 upload_to 속성을 사용할 때 결국 경로를 정해줘야하는데, 이를 쓸 때 년월일로 쓰고 싶다거나 하면 image/%Y/%m/%d 와 같은 형식으로 만들어 줄 수 있다.
+
+form.html을 미리 만들어두면 현재까지 진행한 바로는 new, edit이나 같은 형식에 다른 값만 보내는 것이므로 한번의 작업으로 2가지 일을 같이 할 수 있다. 이 때 값이 다른 부분을 분기하기 위해서 if문과 `request.resolver_match.url_name`이라는 값을 사용한다.
+
+이 값은 이 요청이 어디로부터 왔는지에 대한 정보중 그 경로의 이름을 저장하고 있는 변수로 이를 통해 이 요청이 어디를 통해서 왔는지를 알 수 있다.
+
+django.shortcuts 에서 get_object_or_404이란 함수를 가져올 수 있는데 쓸 떄는 `get_object_or_404(modelname, pk=model_pk)`로 쓸 수 있다. get과 마찬가지로 pk에 해당하는 model 하나를 반환한다.

@@ -14,14 +14,16 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 
 ## 조회
 - `git log` : commit들을 보여줌
+  - `--oneline` 이라는 추가 옵션을 붙여주면 한줄로 조금 더 깔끔하게 보여줌.
 - `git lg` : 요약된 commit들을 보여줌
 - `git reflog` : commit들과 HEAD의 이동들을 축약해 보여줌
 - `git remote -v` : 저장된 remote들을 보여줌
+- `git status` : git 폴더 안에 있는 파일들이 어떤 상태인지를 보여줌
 
 ## 입력
 - `git add 'foldername'` : 대상을 staging
 - `git commit -m 'message'` : staging된 것들을 문구와 함께 commit
-- `git push origin 'branchname'` : origin으로 branchname에 저장된 commit들을 업로드
+- `git push origin 'branchname'` : origin이란 branchname에 commit을 업로드
 
 ## 출력
 - `git pull` : clone으로 가져온 git 폴더의 commit 내용을 받아옴
@@ -29,9 +31,37 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
   - 이 때 url을 잘 보면 앞에 받아올 파일 이름과 뒤에 저장할 이름이 나오는데 이를 수정하면 저장할때 이름을 바꿔서 저장할 수 있다.
 
 ## 수정
-- `git restore` : staging된 내용을 되돌림
+- `git restore` : staging된 내용을 되돌림, 이는 이미 commit된 적이 있는 파일을 staging이 되기전으로 돌리는 명령어다. 
+
 - `git reset` : commit된 내용을 되돌림
+	
 	- 함부로 쓸 경우 push되어 origin에 올라간 내용과 log의 내용이 차이가 날 위험이 존재
+	- 기본값은 `--mixed latestcommithash` 이다
+	- `--hard commithash`  옵션을 줄 경우 파일까지 완전히 commithash때의 상태로 돌려버린다.
+	- `--soft commithash` 옵션을 줄 경우 commithash때의 상태로 commit들은 되돌아가나, 실제 파일에 적용하지는 않는다. 변경사항은 staging에 저장은 해놓는다.
+	- `--mixed commithash` 옵션을 줄 경우 commithash때로 돌아가나 soft와 마찬가지로 실제 파일에는 적용하지 않고, 변경사항은 workign directory에만 남아있게 된다.
+	
+- `git rm --cached filename` : staging된 내용 중 filename에 관한 것만 취소함, 다만 이는 이 파일에 대한 로그 자체를 날려버리는 명령어로 처음에 커밋도 하기 전에 staging된 내용을 내릴 때만 한다. 만약 이미 여러번 commit을 했는데 이 명령어를 쓰면 로그가 날아가 버린다.
+
+- `git commit --amend` : 가장 최근에 한 commit내용을 staging단으로 끌고 내려와서 수정할 수 있다. 고로 이 때 추가로 staging할 내용이 있다면 미리 staging해둔다면 알아서 commit내용에 추가되게 된다. 이 때 수정을 vim이란 프로그램을 통해서 하게된다.  
+
+  ### vim
+
+  git에서 쓰는 수정용 프로그램이다.
+
+  편집기 이므로 열고싶은 파일을 vim filename으로 연다.
+  
+  연습을 해보고 싶다면 openvim.com이나 vim-adventures.com(2단계까지인가 무료) 같은 사이트에서 해볼 수 있다.
+  
+  - `i` : insert mode로 변경
+  - `esc` : 명령모드로 복귀
+  - `q`  : 종료 명령
+  - `w` : 저장 명령
+    - wq : 저장 후 종료
+    - x : wq와 같다.
+  - `dd` : 지우기 명령
+  - `!` : 강제 명령으로 명령 뒤에 붙이면 강제로 실행된다.  
+  - `hljk`: 왼오른위아래로 움직일 수 있다.
 
 ## branch 관련
 `HEAD` : 커밋을 기준으로 봤을 때 내가 지금 있는 곳
