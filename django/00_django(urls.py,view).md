@@ -14,13 +14,14 @@ dynamic web application program
   - 웹페이지를 위한 모든 과정을 하기보다는 이미 어느정도 되어있는 것들을 가져다 써서 쓸 수 있게 해준다.
     - 프레임워크의 성격
     - opinionated vs unopnionated , 독선전 vs 관용적
+    - 말 그대로의 의미로 독선적일 수록 프레임워크가 해놓은 작업이 많고 써야하는 형식이 고정적이며, 관용적일 경우 프레임워크보다 자기가 직접 정해야할 것이 많으며 형식이 자유로울 수 있다.
     - 장고의 경우 다소 독선적인 편이다.
 - 장점
   - 거의 모든 작업이 되어있기 때문에 그런 작업을 다시 할 필요없이 중요기능 구현에만 신경을 쓸 수 있게 해준다.
 - 모델-뷰-컨트롤러 모데 패턴(model-view-controller,mvc)
   - 소프트웨어의 디자인 패턴의 하나이다.
   - 다만 장고는 model-template-view라고 소개하고 있다.(하고있는 역할은 같다.)
-  - model = 데이터베이스 관리, view = 중간 컨트롤러, template  = 레이아웃(화면)
+  - model = 데이터베이스 구조를 잡고, db와의 연결을 관리 장고의 경우 orm이 db에 해줘야할 일을 대신 해주다보니 이 model단이 db관련 조작을 총괄한다, view = 중간 컨트롤러, template  = 레이아웃(화면)
 
 - 어떻게 작동하는가
   - 요청
@@ -34,22 +35,24 @@ dynamic web application program
 
 ### project folder(혹은 master app)
 - `__init__.py` : 이 파일이 이 프로젝트가 파이썬 패키지라는 것을 알려준다.
-- `settings.py` : django의 모든 세팅이 들어있는 파일
-
-  - internationalization : 국제화 관련 코드로 언어 및 국가별 다른 것들을 설정할 수 있다.
+- `settings.py` : django의 모든 세팅이 들어있는 파일은 django.conf.settings.py에 있지만 개발자가 자주 바꿀 법한 것들은 접근이 편한데서 수정할 수 있도록 이곳에 모아놓았다. 실행을 한다면 django.conf.setting.py를 기반으로 masterapp/settings.py 를 override하여 작동한다.
+    - internationalization : 국제화 관련 코드로 언어 및 국가별 다른 것들을 설정할 수 있다.
     - language_code : 언어 설정
     - time_zone : 기본값은 utc, 데이터베이스의 기준 시간을 정해준다. 이 때 대륙/도시이름 순으로 입력을 해주면 도시의 시간에 맞춰서 기준이 설정된다.
-  - installed_apps : 설치된 앱들을 나타내는 리스트
-    - 이 앱들을 탐색할 때 이 리스트의 순서대로 그냥 탐색해서 선착순으로 가져오기 때문에, 같은 이름을 가진 개체가 다른 앱에 있을 경우 꼬일 수 있다.
-    - 이를 위해 name spacing이 필요하다.
-    - name spacing이란 단순히 같은 이름을 가진 파일들이더라도 어디에 소속되어 있는지를 추가로 적어줌으로서 혼선을 벗어나는 일로서, 그 앱의 이름과 같은 폴더 안에 자료들을 넣어둠으로서 `appname/file` 식으로 찾게 만드는 것이다.
-    - ex) `pages/useful_someting.html` in templates 
-  - middleware : 구현해놓은 프로그램을 실제로 작동하기 앞서 보내준 요청을 한번 걸러주는 역할을 한다. 보안적인 면에서의 역할을 주로 한다.
-  - debug : 이 항목을 true로 해놓고 서버를 돌리면 어떤 에러인지를 상세히 알려준다. 개발단계에서는 켜놓고 하는게 좋지만, 상품발매단계가 되면 필수적으로 꺼야한다. 보안 사항도 전부 보여주기 때문에.
-  - MEDIA_ROOT : 여기에 내가 받을 파일의 경로를 저장해 놓으면, 서버에서 파일을 받아올 때 이걸 참고해 원하는 위치에 저장을 해준다.
+    - installed_apps : 설치된 앱들을 나타내는 리스트
+      - 이 앱들을 탐색할 때 이 리스트의 순서대로 그냥 탐색해서 선착순으로 가져오기 때문에, 같은 이름을 가진 개체가 다른 앱에 있을 경우 꼬일 수 있다.
+      - 이를 위해 name spacing이 필요하다.
+      - name spacing이란 단순히 같은 이름을 가진 파일들이더라도 어디에 소속되어 있는지를 추가로 적어줌으로서 혼선을 벗어나는 일로서, 그 앱의 이름과 같은 폴더 안에 자료들을 넣어둠으로서 `appname/file` 식으로 찾게 만드는 것이다.
+      - ex) `pages/useful_someting.html` in templates 
+    - middleware : 구현해놓은 프로그램을 실제로 작동하기 앞서 보내준 요청을 한번 걸러주는 역할을 한다. 보안적인 면에서의 역할을 주로 한다.
+    - debug : 이 항목을 true로 해놓고 서버를 돌리면 어떤 에러인지를 상세히 알려준다. 개발단계에서는 켜놓고 하는게 좋지만, 상품발매단계가 되면 필수적으로 꺼야한다. 보안 사항도 전부 보여주기 때문에.
+    - MEDIA_ROOT : 여기에 내가 받을 파일의 경로를 저장해 놓으면, 서버에서 파일을 받아올 때 이걸 참고해 원하는 위치에 저장을 해준다.
+    - templates: 프로젝트에 쓰이는 templates 관련 세팅을 적어놓는곳
+      - DTL이 기본적으로 내장하고 있는 정보들이 context_processors에 적혀있다.  그 중 몇 가지가 request와 user다.
+    - SESSION_COOKIE_AGE: 이 항목의 경우 장고가 내장하고 있는 세션 발급 기능을 쓸 때 세션을 얼마나 길게 유지할 지를 설정해 줄 수 있다. 
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
-  - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다.
+  - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다. 기본적으로 view와 직접 연결을 하는 것과 가능하나, app이 많아질 경우 masterapp에서 이를 다 연결해놓는 것은 유지 보수 측면에서 좋지 않으므로 include함수를 이용해 각 앱의 ulrs.py로 옮기는 역할을 더 많이 한다.
 - `templates` : 앱에 들어갈 base templates를 놓는 곳으로 다른 앱들에서 공통으로 쓸  templates를 가져다놓는다. 이 폴더는 앱과는 다르게 장고가 이를 인식하지 못한다. 즉 새로 경로를 설정해줘야만한다. 이 경로를 설정할 때 settings.py에서 `TEMPLATES`의 `DIRS`에 BASE_DIR/'firstpjt'/'templates' 처럼 추가를 해줘야한다. 이 `DIRS`는 그 아래에 있는 `APP_DIRS`가 찾을 templates폴더 외에 것을 찾을 목록에 추가하는 역할을 한다. 여기서 `BASE_DIR`은 프로젝트 생성시의 모든 걸 담고 있는 폴더를 의미하고, 절대 경로가 바뀌더라도 프로젝트 루트의 위치를 그때마다 잡아주는 역할을 한다. 관습적으로 마스터 앱이나 혹은 프로젝트 root에 만드는 편이다.
 
 ### app(이름은 꼭 '복수형'으로, 생성(startapp) 후에 등록할 것)
@@ -65,11 +68,10 @@ dynamic web application program
 - `tests.py` : 테스트용 코드를 작성하는 곳
 
 - `urls.py` : 이 앱에서 쓸 view함수들을 모아놓은곳
-
-    - 추가적으로 \<str:name>같은 것을 url에 붙여서 보내온 경우 이를 views에 있는 함수에서 인자로 받을 수가 있는데, 이를 variable routing(주소자체를 변수처럼 쓰는것)이라고 한다.
+- 추가적으로 \<str:name>같은 것을 url에 붙여서 보내온 경우 이를 views에 있는 함수에서 인자로 받을 수가 있는데, 이를 variable routing(주소자체를 변수처럼 쓰는것)이라고 한다.
     - 이렇게 하면 request에서 일일히 정보를 뽑아낼 필요없이 url에 적혀있는 정보를 바로 변수로 받아서 함수에다 쓸 수 있다. 
     - str이 기본값이므로 생략가능하다.
-
+    
 - `views.py` : view의 역할을 하는 파일
     - views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
       - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다. 그리고 세번째로 context라는 정보가 담긴 딕셔너리를 넣게 된다.
@@ -88,7 +90,7 @@ dynamic web application program
 - DTL
   1. variable(사실상 print다)
      - `{{ variable }}` 형식으로 써놓고 render함수에서 template파일을 받을 때 이를 삽입해줌, 중괄호와 변수명 사이를 스페이스로 좀 띄워놓는 것을 권장
-     - 밑줄로는 시작 불가,  공백 구두점 또한 사용불가
+     - 밑줄로는 시작 불가,  공백 혹은 구두점 또한 사용불가
      - dot(.)을 사용하여 변수 속성에 접근 가능(딕셔너리의 경우 key로, list의 경우 인덱스로 접근가능)(ex)`dict.key`, `list.0`)
      - render함수의 세번째 인자로 들어가며 변수명과 실제 값의 딕셔너리 형태로 전달하게 된다.
      - 이 때 일일히 적기보다는 context라는 이름의 딕셔너리 변수를 만들어 저장해놓고 이를 조정하면 유지보수가 편하다.

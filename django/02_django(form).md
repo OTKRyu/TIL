@@ -46,7 +46,7 @@ forms의 작성방법은 models의 방식과 거의 흡사하다.
         content = forms.CharField(widget='Textarea')
     ```
 
-- forms.ModelForm(): 이걸 상속받은 클래스의 서브클래스 meta에 model이 뭔지와 어떤 fields와 연결할 지를 설정해주면 그 model과 연동이 된다. model을 통해 form class를 만들 수 있는 helper라고도 한다. 모델이 이미 정의되어 있을 때 사용하며, 이 구조자체가 db와 연동되어 있기 때문에 이를 바로 form에서 활용할 수 있다.
+- forms.ModelForm(): 이걸 상속받은 클래스의 서브클래스 Meta에 model이 뭔지와 어떤 fields와 연결할 지를 설정해주면 그 model과 연동이 된다. model을 통해 form class를 만들 수 있는 helper라고도 한다. 모델이 이미 정의되어 있을 때 사용하며, 이 구조자체가 db와 연동되어 있기 때문에 이를 바로 form에서 활용할 수 있다. 이 때 Meta클래스에 model과 fields에 아무것도 쓰지 않으면 장고가 웹페이지 유효성 검사를 할 때 거절을 당한다. 고로 fields를 직접 적어주던가 exclude로 제외할 fields를 적어주던가 둘 중 하나는 꼭 해야한다.
 
   - 양 쪽 모두 data는 request 안에 들어 있는 것을 말한다.
 
@@ -60,8 +60,9 @@ forms의 작성방법은 models의 방식과 거의 흡사하다.
         	class meta:
                 model = Article
                 fields = '__all__' # 이 경우 모델에 있는 모든 필드를 폼에 적용하겠다는 뜻이다.
-    ```
-
+                # fields = ['username','email'] 처럼 하나씩 적어줘도 된다. 튜플과 리스트 모두 가능
+  ```
+    
   - 연동이 되기 때문에 model에서 하는 일을 실제로 form에서도 할 수 있다. 물론 이 일을 폼이 하는 건 아니고 연결된 모델에 정보를 넘겨줘서 실행하는 것이다. ex) `form.save()`(실제로 form에 폼클래스를 적용하여 하면 모델에서 하듯이 save()가 가능하다.)
 
   - 단순히 연동이 아닌 유효성검사등의 기능을 구현하고 싶다면 forms.Form을 쓸 때처럼 일일히 써줘야한다.

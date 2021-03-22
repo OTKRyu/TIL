@@ -125,7 +125,8 @@ hyper text markup language의 약자
   - `method`: 입력 데이터 전달 방식 지정(get, post 두 종류)
     - get : 모든 데이터가 url에 공개되어 전송, 그리고 기본값이다.
     - post : 데이터가 url에 공개되지 않음, `<form>`로 만든 post외의 모든 접속 시도는 get라고 봐도 무방하다.
-  - `enctype = multipart/form-data` : html 폼에서 데이터를 보낼 때의 설정으로 이 설정이 기본값으로 설정되어 있으면 데이터전송을 안 한다.
+  - `enctype =` : html 폼에서 데이터를 보낼 때의 설정으로 이 설정이 기본값으로 설정되어 있으면 데이터전송을 안 한다.
+    - multipart/form-data : form에서 받은 파일까지 전송하고 싶다면 기본값이 아닌 이 설정으로 바꿔줘야한다.
   - 하위 태그
     - `<input>` : 입력을 받는 태그, 속성마다 다른 점들이 있으므로 숙지하고 사용해야 한다.(inline level)
       - `type = "text"` : 단순 text를 받는 input
