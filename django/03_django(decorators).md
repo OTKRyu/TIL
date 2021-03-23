@@ -6,6 +6,8 @@
 
 함수위에 어떤 decorator를 적용할지를 `@decorator` 형식으로 써주면 된다.
 
+기본적으로 decorator들은 파이썬 코드들이 그러하듯 위에서부터 아래로 적용되는 순서이다.
+
 기본적으로 데코레이터들도 함수고 원래라면 서버측에서 설정해야하는 것들을 데코레이터들이 미리 가지고 있으므로 이를 사용하면 view함수의 내용을 간단하게 하면서도 틀렸을 경우 에러내용를 보낸다든지 하는 것들을 자동으로 해준다.
 
 - allowed http method(`from django.views.decorators.http import `)

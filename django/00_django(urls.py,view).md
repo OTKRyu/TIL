@@ -49,6 +49,7 @@ dynamic web application program
     - MEDIA_ROOT : 여기에 내가 받을 파일의 경로를 저장해 놓으면, 서버에서 파일을 받아올 때 이걸 참고해 원하는 위치에 저장을 해준다.
     - templates: 프로젝트에 쓰이는 templates 관련 세팅을 적어놓는곳
       - DTL이 기본적으로 내장하고 있는 정보들이 context_processors에 적혀있다.  그 중 몇 가지가 request와 user다.
+      - 이런 형식으로 바꿔주는 것은 middleware가 해주는 일이다.
     - SESSION_COOKIE_AGE: 이 항목의 경우 장고가 내장하고 있는 세션 발급 기능을 쓸 때 세션을 얼마나 길게 유지할 지를 설정해 줄 수 있다. 
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.

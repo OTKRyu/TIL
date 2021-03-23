@@ -26,7 +26,7 @@ models.py
 
 ```python
 from django.contrib.auth.models import AbstractUser
-from django import models
+from django.db import models
 
 class User(AbstractUser):
     # username. password, is_active 등등은 이미 AbstractUser에 있는 값들이고 이 아래에 내가 추가하고 싶은 항목들을 추가한다.
@@ -35,13 +35,14 @@ class User(AbstractUser):
 forms.py
 
 ```python
-from django.contirb import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
 class UserForm(UserCreationForm):
     # customize할 내용들
     class Meta:
         model = User
+        fields = ('username',)
 ```
 
 - login()
@@ -67,8 +68,9 @@ class UserForm(UserCreationForm):
   - login required decorator
     - `from django.contrib.auth.decorators import login_required`
     - 사용자가 로그인 했는지 확인하는 데코레이터
-    - 로그인 안 한 유저일 경우 settings.LOGIN_URL에 설정된 경로로 redirect
-    - 이렇게 리다이렉트 되었을 경우, 로그인만 되면 들어갈려고 하던 웹페이지로 바로 다시 갈 수 있도록 `?next=`라고 url에 붙여준다. login_required에서 next를 붙여주지만 실제로 그쪽으로 이동시키는 건 개발자가 해야되리 일이다. next항목은 GET에 있기 때문에 request.GET.get('next')로 next가 있는 없는 지를 확인해 보내줄 수 있다. 이 때 `redirect( request.GEt.get('next') or 'articles:index')`로 분기해서 작성할 수 있다. 이렇게  next로 보내게 되는 request는 방식이 get일 수밖에 없기 때문에 만약 post로만 작동하는 view함수 일 경우 문제가 생길 수 있다. 이런 때는 attribute를 사용해서 처리해 줄 수도 있다.
+    - 로그인 안 한 유저일 경우 settings.LOGIN_URL에 설정된 경로로 redirect(이것 또한 settings.LOGIN_URL에 저장되어 있다. 관습적으로 accounts/login/이라는 경로를 쓰기때문에 기본값으로 이게 들어가 있다.)
+    - 이렇게 리다이렉트 되었을 경우, 로그인만 되면 들어갈려고 하던 웹페이지로 바로 다시 갈 수 있도록 `?next=`라고 url에 붙여준다. login_required에서 next를 붙여주지만 실제로 그쪽으로 이동시키는 건 개발자가 해야될 일이다. next항목은 GET에 있기 때문에 request.GET.get('next')로 next가 있는 없는 지를 확인해 보내줄 수 있다. 이 때 `redirect( request.GET.get('next') or 'articles:index')`로 분기해서 작성할 수 있다. 이렇게  next로 보내게 되는 request는 방식이 get일 수밖에 없기 때문에 만약 post로만 작동하는 view함수 일 경우 문제가 생길 수 있다. 이런 때는 attribute를 사용해서 처리해 줄 수도 있다.
+    - 여기서 보면 method='POST'인데 request의 구조를 보면 GET에도 멀쩡히 데이터가 들어있다. 즉 전송방식과 실제 데이터가 들어있는 것은 하등 관계가 없으며 GET,POST라는 request의 하위 구조는 단순히 공개하는 데이터인지 아닌지에 대한 이름에 불과하다.
 
 ####  actual use
 
@@ -137,6 +139,23 @@ def index(request):
     return render(request, 'accounts/index.html', context)
 ```
 
+```python
+# profile settings.LOGIN_REDIRECT에 accounts/profile로 등록되어 있다. 이 때 로그인한 유저의 정보만을 볼 것이라면 아래의 코드로 충분하지만 남들의 정보를 조회할 수 있게 만들고 싶다면 pk를 따로 추가한다거나 아니면 username을 받는다든지 해서 만들 수도 있다. username의 경우 무결성을 보장하는 필드로 만들 수 있으므로 pk처럼 써도 된다. 다만 user라는 이름을 쓸 경우 request.user와 겹치게 되므로 이런 혼선을 막기 위해 다른 이름을 쓰는 것을 권장한다.
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    context = {'user_profile':user,}
+    if request.user == user:
+        if request.method == 'POST':
+            form = CustomUserChangeForm(request.POST, instance = user)
+            if form.is_valid():
+                form.save()
+                return redirect('accounts:profile', username=user.username)
+        else:
+            form = CustomUserChangeForm(instance = user)
+    context['form'] = form
+    return render(request, 'profile.html',context)
+```
+
 
 
 - update
@@ -154,8 +173,24 @@ def index(request):
   ```
 
   - views.py에는 이 customUserChangeForm을 가져와 update에 사용하면 된다.
+
   - article의 업데이트와 달리 이번 인스턴스는 이미 request.user에 저장되어 있으므로 그대로 가져다 쓰면 된다.
-  - 그 외에도 PasswordChangeForm같은 것도 있다.
+
+  - 그 외에도 PasswordChangeForm같은 것도 있다. 이 때 경로가 profile/password로 기본적으로 설정되어 있기 때문에 기본 설정을 바꿀 것이 아니라면 이 url로 가도록 짜줘야한다. 이 때 프로필 경로가 <str>로 되어있으면 password조차 str로 판단해서 profile로 빠질 수 있으므로 password를 먼저 탐색하게 해야한다. 그리고 비밀번호 변경하면 다시 로그인하도록 logout이 자동으로 된다. 이를 막고 싶으면 session을 업데이트 해줘야하는데 `from django.contrib.auth import update_session_auth_hash`를 사용하면 가능하다.
+
+    ```python
+    @login_required
+    def change_password(request):
+        if request.method=='POST':
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('accounts:profile', request.user.username)
+        else:
+            form = PasswordChangeForm(request.user)
+        context = {'form':form}
+        return render(request, 'accounts/change_password.html', context)
+    ```
 
 - delete
 

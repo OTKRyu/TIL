@@ -57,17 +57,20 @@ forms의 작성방법은 models의 방식과 거의 흡사하다.
   - ```python 
     from .models import Article
     class ArticleForm(forms.ModelForm):
+        password = None #이렇게 하면 원래 있는 필드라도 안 나오게 만들 수 있다. override한 것이다.
         	class meta:
                 model = Article
                 fields = '__all__' # 이 경우 모델에 있는 모든 필드를 폼에 적용하겠다는 뜻이다.
                 # fields = ['username','email'] 처럼 하나씩 적어줘도 된다. 튜플과 리스트 모두 가능
+    ```
   ```
     
   - 연동이 되기 때문에 model에서 하는 일을 실제로 form에서도 할 수 있다. 물론 이 일을 폼이 하는 건 아니고 연결된 모델에 정보를 넘겨줘서 실행하는 것이다. ex) `form.save()`(실제로 form에 폼클래스를 적용하여 하면 모델에서 하듯이 save()가 가능하다.)
-
+  
   - 단순히 연동이 아닌 유효성검사등의 기능을 구현하고 싶다면 forms.Form을 쓸 때처럼 일일히 써줘야한다.
-
+  
     그리고 받을 때도 model처럼 쓸 수가 있는데 이 때 알아서 form에 값에 할당을 해준다.( ex)article.title = 'hi' 면 html로 렌더링할 때 title자리에 value='hi'까지 해준다는 뜻이다.) 이 부분이 어떻게 돌아가는 지에 대해 더 자세히 알고 싶다면 form태그가 어떻게 구성되어 있는지 내부구조를 들여다보길 바란다.
+  ```
 
 - html에 적용할 때
 
