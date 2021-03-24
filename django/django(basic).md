@@ -38,3 +38,4 @@
 - appname/id/edit/ : 단일 데이터 수정 html
 - appname/id/update/ : 단일 데이터 수정
 - appname/id/delete/ : 단일 데이터 삭제
+

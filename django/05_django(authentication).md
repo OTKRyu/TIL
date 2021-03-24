@@ -12,6 +12,8 @@ authorization : 권한 확인
 
 이를 구현하긴 위한 form들은 미리 built-in되어있음(UserCreationForm, AuthenticationForm 등등)
 
+이런 폼 중 UserCreationForm와 UserChangeForm은 modelForm으로 기본적으로 auth.User와 연결되어 있으므로 만약 다른 유저 모델을 쓸 것이라면 유저모델을 대체해줘야한다. 그리고 이렇게 modelForm을 상속받아 쓸 떄는 Meta도 같이 상속시켜주는 것이 좋다. 상위 클래스가 있으니 어떤 기능을 쓸 때 custom에 없으면 상위클래스가서 찾아서 잘 작동하겠지만, 좋은 방법이 아니다.
+
 장고는 세션과 미들웨어를 사용하여 인증 시스템을 request객체에 연결
 
 고로 request.user에서 이 정보를 받아볼 수 있음
@@ -40,9 +42,10 @@ from .models import User
 
 class UserForm(UserCreationForm):
     # customize할 내용들
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
         fields = ('username',)
+        # 혹은 이를 한번에 가져오고 추가로 하고 싶다면 UserCreationForm.Meta.fields + customfields 식으로 튜플 두 개를 붙여서 쓰는 것도 가능하다. 상속받고 있는 폼의 필드를 일단 모두 가져오고 그 후에 커스텀으로 더 붙일 수가 있다.
 ```
 
 - login()
@@ -110,9 +113,9 @@ def logout(request):
 
 ## user crud
 
-장고가 기본적으로 유저와 관련된 db나 이런걸 만들어주기 때문에 어떤 user모델을 쓸 건지를 기본값으로 적어놓는다. 만약 이를 바꾸고 싶다면 setting.py에 AUTH_USER_MODEL에 적어서 경로를 바꿔주면 장고가 알아듣고 기본 유저모델을 자기가 만든 유저모델로 바꿔준다. 이 때 완전한 경로를 적는 것이 아니라 `'accounts.User'`정도로만 써줘도 장고가 알아서 경로를 잡는다. 장고 내부의 원리가  AUTH_USER_MODEL이 하나일 때를 기준으로 하고 있기 때문에 이에 해당하는 것은 꼭 하나만 해야한다.
+장고가 기본적으로 유저와 관련된 db나 이런걸 만들어주기 때문에 어떤 user모델을 쓸 건지를 기본값으로 적어놓는다. 만약 이를 바꾸고 싶다면 setting.py에 AUTH_USER_MODEL에 적어서 경로를 바꿔주면 장고가 알아듣고 기본 유저모델을 자기가 만든 유저모델로 바꿔준다. 이 때 완전한 경로를 적는 것이 아니라 `'accounts.User'`정도로만 써줘도 장고가 알아서 경로를 잡는다.  사이에 들어갈 models는 써주지 않아도 된다. 장고 내부의 원리가  AUTH_USER_MODEL이 하나일 때를 기준으로 하고 있기 때문에 이에 해당하는 것은 꼭 하나만 해야한다.
 
-이렇게 새로운 USER모델을 만들고 싶다면 accounts/models.py 에 추가해서 만들어주는 방법이 있다.
+이렇게 새로운 USER모델을 만들고 싶다면 accounts/models.py 에 추가해서 만들어주는 방법이 있다. 이렇게 사용하는 방법을 장고에서도 매우 추천하고 있고, 이렇게 해놓는 것이 만일을 위해서도 좋다. 만에 하나라도 user model을 프로젝트 도중에 바꿀 일이 생기게 된다면 기본 유저의 경우 바꾸기가 쉽지가 않다. 이를 미리 customuser model로 해놓았다면 그나마 변경을 시도할 수 있고, 확장 또한 기본 User클래스를 쓰는 것보다는 쉽게 구현할 수 있다.
 
 장고에서 미리 만들어놓은 AbstractUser라는 클래스가 있으므로 이를 상속받아와서 새로 만들어주면 내가 추가하고 싶은 것을 추가하고 덮어씌우고 싶은것은 덮어씌울 수 있다.
 
@@ -123,6 +126,7 @@ def logout(request):
 - create
 
   - 이번에는 UserCreationForm을 사용
+  - UserCreationForm은 기본적으로 ModelForm이므로 어디로 이어져있는가를 봐야하는 하는데 User와 연결되어있다. 고로 이를 쓸 때는 상속받아와서 내가 쓸 CustomUser와 이어줘야한다.
   - UserCreationForm은 기본적으로 장고의 forms.ModelForm을 상속받은 클래스이므로 첫 번째 인자로 data를 넣으면 된다.
   - 이렇게 해서 유효성 검사를 거치고 나면 save()를 해주게 되는데 이 때 UserCreationForm도 save시에 user객체를 반환하게 된다.
   - 나머지는 login과 동일하다.
@@ -161,13 +165,14 @@ def profile(request, username):
 - update
 
   - UserChangeForm의 경우 admin이 일반 사용자들을 관리할 수 있는 것만큼의 권한을 제공한다. 즉 너무 많은 권한을 제공하기 때문에 이 폼 그대로는 쓸 수가 없다.
+  - 그리고 UserChangeForm도 ModelForm이고 기본적으로 User와 연결되어 있기 때문에 사용할 때 상속받아와서 CustomUser와 연결해서 쓰는 편이 좋다.
   - forms.py
 
   ```python
   from django.contrib.auth.forms import UserChangeForm
   from django.contrib.auth import get_user_model #user model은 여러군데에서 쓰는 장고 안의 파일이기 때문에 이를 직접 끌어다 쓰는 것은 권장하지 않는다. 만에 하나라도 user model 말고 유저 모델을 커스텀하게 되면 사용할 수 없게 되기 때문이다. 고로 활성화되어 있는 모델을 가져오는 함수를 써서 쓰게 된다.
   class CustomUserChangeForm(UserChangeForm):
-      class Meta:
+      class Meta(UserChangeForm):
           model = get_user_model()
           fields = ('email', 'first_name', 'last_name',) # 변동하지 않는 항목이기 때문에 튜플로 자주 쓰는편이다. 그리고 비밀번호의 경우 암호화하여 저장하기 때문에 비밀번호는 특별 취급으로 내가 추가하지 않아도 알아서 작동한다. 
   ```
