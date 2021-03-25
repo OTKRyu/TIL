@@ -13,6 +13,14 @@ relationship fields
 - 참조 무결성 : 참조할 때 혼선이 생기지 않게 되어 있는지
 - 데이터 무결성 : 데이터 자체가 정확하게 의미있는 값만을 가지고 있는지
 
+장고에서 db에 접속하는 방법
+
+`python manage.py dbshell` : 을 이용하면 db에 직접적으로 접속하여 sqlite3을 쓸 떄처럼 sql문으로 db를 조작할 수 있다.
+
+json의 경우 db에 접속할 필요 없이 그냥 loaddata 명령이 데이터를 읽어줬지만 csv같은 경우 형식이 맞지 않아 이는 불가능하다.
+
+고로 dbshell까지 들어가서 db에 데이터 넣듯이 넣는 수밖에 없다.
+
 ### a many to one relationship(1:n)
 
 - foreign key(외래 키)
@@ -79,7 +87,7 @@ def comment_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     comment_form = CommentForm(request.POST)
     if comment_form.is_valid(): # form을 만들 때 content에만 유효성검사를 하게 만들어뒀기 때문에 content만 멀쩡하면 통과는 한다. 다만 저장은 할 수 없다. article 요소가 없기 때문
-        comment = Comment_form.save(commit=False)
+        comment = Comment_form.save(commit=False) # 그래서 commit이라는 실제 db에 저장할거냐는 옵션을 False로 준다.
         comment.article = article
         # comment.article_id = article_pk 라고 해도 상관없이 저장은 되나 권장하지는 않는다.
         comment.save()
@@ -124,8 +132,13 @@ class CommentForm(forms.ModelForm):
 
   - 이 때 modelname은 다 소문자화된다.
   
+  - 이 명령어 DTL에서도 알아듣는다.
+  
   - ```python
   article.comment_set.all()
     ```
-  
-    
+
+### ORM
+
+- `modelname.objects.count()` : sql의 count와 같다 db에서 숫자를 세어서 장고로 숫자만 가져온다.
+- 

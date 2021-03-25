@@ -36,8 +36,12 @@
 - 장고의 경우 기본적으로 orm으로 db를 구성하므로 db를 장고에서 조작할 수 있도록 돕는 기능 또한 가지고 있음.
 - 이를 database api라고 하고 기본적으로 classname.manager.querysetAPI() 형식을 띄고 있다.
   - querysetAPI가 다양하므로 외울 수 있는 건 외우고 나머지는 문서를 참조하는 것이 좋다.
+  - 걔중 몇개는 django.db.models에 미리 저장되어 있으므로 가져와서 쓰면 된다.
+  - 이 중 하나인 .query는 이 명령이 sql로 어떤 명령인지를 출력해주는 속성이다.
   - EX)article.objects.all()
   - 다만 이를 파이썬의 shell에서는 바로 보기가 어렵기 때문에 이를 확인하면서 개발을 하기가 쉽지 않다 고로 이것을 보면서 하기 위해서 ipython이나 django-extensions를 추가하여 보면서 개발할 수 있게 해준다. 명령어는 `python manage.py shell_plus`이고 종료는 `exit`으로 하거나 강제로 종료해서 할 수 있다.
+  - 이 때 옵션으로 --print--sql을 붙여서 실행하면 db에 가는 sql문도 함께 나오게 된다. 다만 이런 sql은 orm측에서 조작을 하기 때문에 limit가 걸려서 나오는등 조금 수정이 되어있다.
+  - 이외에도 --notebook을 붙이면 주피터 노트북 환경에서 장고를 돌릴 수 있다.
 - manager
   - 장고가 데이터베이스 쿼리작업에 제공되는 인터페이스
   - 기본적으로 모든 장고 모델 클래스에 objects라는 manager 추가됨
@@ -63,13 +67,28 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
 - read
   - `all()` : 존재하는 모든 쿼리셋을 가져온다.
   - `get()` : ()내부에 조건을 넣으면 조건에 맞는 레코드 하나를 가져온다.  없다면 존재하지 않는다는 에러가, 2개 이상이면 값이 여러개가 있다는 에러가 난다. 고로 `get()`은 딱 하나 있는 값을 찾을 때 쓰는 편이며, 이를 항상 보장하는 것은 pk뿐이기때문에 대체로 pk로 조회할 때 쓴다.
-  - `filter()` : ()내부에 조건을 넣으면 조건에 맞는 쿼리셋을 가져온다. 
-  - `order_by()` : db에 저장된 모든 자료를 주는 조건에 맞춰서 정렬시켜서 가져온다. ex) -pk의 경우 pk의 역순이라고 생각해 `all()`로 가져온것과 같다.
+  - `filter()` : ()내부에 조건을 넣으면 조건에 맞는 쿼리셋을 가져온다.
+    - 조건을 넣을 때 and 조건은 ,로 연결 
+    - or 조건의 경우 Q를 모든 조건 앞에  각각 넣어주고 |로 연결해서 사용
+  - `order_by()` : db에 저장된 모든 자료를 주는 조건에 맞춰서 정렬시켜서 가져온다. ex) -pk의 경우 pk의 역순이라고 생각해 `all()`로 가져온것과 같다. 이는 pk말고 다른 column에서도 쓸 수 있다. 한 가지 조건 이상으로 정렬시킬 수도 있으며, 순서는 sql에서 쓰던 것과 같다.
+  - `annotate(full_name=Concat('first_name','last_name'))` : sql상의 GROUP BY를 구현하기 위한 기능으로  db상의 가상의 column을 하나 더 만드는 기능이다. 다만 이를 만들 때 쿼리셋 하나에 대한 정보를 이용해 만드는 것일 때 쓴다.
+    - `from django.db.models.functions import Concat` : db상에서 두 개의 str 컬럼을 붙여낼 때 쓰는 기능이다.
+    - `from django.db.models import Count(columnname)` : columnname에 해당하는게 몇개인지를 세어주는 명령어로 연결관계가 존재할 경우 하나의 column에 여러 개의 연결이 있을 수 있게 된다. 이를 세기 위해서 쓰는 함수이다. 이렇게 하면 본래 db에 쿼리를  2~3번 날리는 일을 한번에 처리할 수 있게 된다.
+  - `aggregate()` : 쿼리셋 하나가 아닌 테이블 전체나 일부분에 대한 연산을 수행해주는 명령어 이다. 다른 함수들과 조합하여 쓰인다.
+  - options
+    - `.values('columnname',)` : sql에서 SELECT 바로 뒤에 뭘 불러올 건지에 대해서 지정하는 곳이다. 안 적으면 기본값으로 전부 가져온다.
+    - `.count()` : sql의 count와 같다 db에서 숫자를 세어서 장고로 숫자만 가져온다.
+    - `[a:b]`: 파이썬에서 리스트를 자르는 부분인데 이를 쿼리셋 api에 붙여쓰면 가져온 뒤에 자르는게 아니라 이를 인지해서 OFFSET=a, LIMIT = b 옵션을 sql문에 붙여준다.
   - field lookups
     - 조회시 특정 조건을 여러 개 적용시키기 위해 사용
     - `filter`, `get`, `exclude` 에 넣을 때 쓴다.
     - `fieldname__lookuptype=value` 형식으로 쓴다. 지원하는 것이 꽤나 많으니 문서를 확인하여 사용하는 것을 권장
     - sql에서 본 것들이 조금씩 다른 이름으로 되어있는 경우가 많다.
+    - `__gt`, `__gte` : greater than, greater than equal
+    -  `__lt`, `__lte` : lower than, lower than equal
+    - `__startswith`, `__endswith` : 시작할 때나 끝날 때 이 값이 맞는 지를 검사한다.
+    - sql에서 쓰던 와일드 카드 `_` ,`%` 중 장고 orm에서는 `%` 만 사용가능하다. 그 이상을 하려면 정규표현식(regex)를 사용한다.
+    - regex란 패턴을 어떻게 표현할 지에 대해 정해놓은 기준으로 python의 re 라이브러리가 이에 대한 기능을 가지고 있다.
 - update
   - `save()`: pk값이 없는 값이라면 값들을 새로 추가해가면서 db에 추가하지만, pk값을 가지고 있는 객체를 빼와서 인스턴스에 할당하고 수정한 후 `save()`를 하는 경우 이 매서드가 있던 것을 수정한 것으로 인식하여 원래 값을 수정한다.
 - delete

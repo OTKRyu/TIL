@@ -38,6 +38,7 @@ Command-line interface의 약자로 말그대로 명령어 한줄씩 써서 작�
   - 생성
 - `mv filelocation/ dirlocation/`
   - filelocation에 있는 파일을 dirlocation으로 이동시킨다.
+  - 혹은 같은 자리에서 이름만 바꾼다면 이름을 변경하는 명령어이기도 하다.
 - `start`
   - 기본적으로 연결되어 있는 프로그램을 이용해 해당 프로그램을 실행한다.
   - 폴더에 쓸 경우, 그 폴더를 gui로 열어준다.
