@@ -15,6 +15,7 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 ## 조회
 - `git log` : commit들을 보여줌
   - `--oneline` 이라는 추가 옵션을 붙여주면 한줄로 조금 더 깔끔하게 보여줌.
+  - `--graph`이라는 추가 옵션을 주면 로그와 함게 브랜치가 어떻게 움직였는지 그래프를 보여줌
 - `git lg` : 요약된 commit들을 보여줌
 - `git reflog` : commit들과 HEAD의 이동들을 축약해 보여줌
 - `git remote -v` : 저장된 remote들을 보여줌
@@ -41,6 +42,8 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 	- `--soft commithash` 옵션을 줄 경우 commithash때의 상태로 commit들은 되돌아가나, 실제 파일에 적용하지는 않는다. 변경사항은 staging에 저장은 해놓는다.
 	- `--mixed commithash` 옵션을 줄 경우 commithash때로 돌아가나 soft와 마찬가지로 실제 파일에는 적용하지 않고, 변경사항은 workign directory에만 남아있게 된다.
 	
+- `git revert commithash` : 할 경우 reset처럼 commithash를 기준으로 돌아가게 만들어줄 수 있으나, commit 기록들은 남기고 commithash 당시의 파일과 현재의 파일을 merge시키는 것처럼 움직인다. conflict를 해결해주고 나서 다시 커밋을 해주면 reverting이 완료된다. 사실상 commithash당시의 파일 상황대로 working directory를 만든 뒤 새 커밋을 찍어주는 것과 같다. 다만 프로젝트가 커지면 commithash 당시의 파일 상황이 어떤지를 아는것이 쉬운 일이 아니므로 이런 기능이 필요하다.
+
 - `git rm --cached filename` : staging된 내용 중 filename에 관한 것만 취소함, 다만 이는 이 파일에 대한 로그 자체를 날려버리는 명령어로 처음에 커밋도 하기 전에 staging된 내용을 내릴 때만 한다. 만약 이미 여러번 commit을 했는데 이 명령어를 쓰면 로그가 날아가 버린다.
 
 - `git commit --amend` : 가장 최근에 한 commit내용을 staging단으로 끌고 내려와서 수정할 수 있다. 고로 이 때 추가로 staging할 내용이 있다면 미리 staging해둔다면 알아서 commit내용에 추가되게 된다. 이 때 수정을 vim이란 프로그램을 통해서 하게된다.  
@@ -69,16 +72,16 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 - `git branch` :  branch 조회
 - `git branch -d 'branchname'` : branch 삭제
 - `git branch -D 'branchname'` : branch 강제 삭제
-- `git branch 'branchname'` : branch 추가
-- `git branch -c 'branchname'` : branch 생성과 이동
-- `git merge 'branchname'` : branch상에 되었던 커밋을 master에 병합
+- `git branch 'branchname'` : branch 추가, 이 때 HEAD 기준으로 갈라져나온 branch임을 git이 인지를 함. 여기서 HEAD가 원류라고 볼 수 있다.
+- `git branch -c 'branchname'` : branch 생성과 이동(branch 생성과 동시에 switch로 생성한 branch로 이동)
+- `git merge 'branchname'` : branch상에 되었던 커밋을 내가 지금 있는 HEAD에 해당하는 branch와 병합함 
 	- branch가 하나였을 경우 master가 branch가 나간만큼 따라가면서 병합
-		 - 이를 패스트포워딩이라고 함
-	- branch가 여러 개일 경우 각 branch가 가지고 있는 수정 사항들을 합쳐 하나의 commit을 새로 만들고 거기로 병합
+		- 이를 패스트포워딩이라고 함(fastforwarding)
+	- branch가 여러 개일 경우 각 branch가 가지고 있는 수정 사항들을 합쳐 하나의 commit을 새로 만들고 거기로 병합, 이 경우를 recursion이라고 부름
 	- 같은 폴더를 다른 방식으로 여러 branch에서 동시에 고친 후 merge를 하면 conflict가 일어나서 병합이 안 되었다고 알려주며, 이를 해결하라고 표시를 해줌
-		- vscode가 이를 좀 편하게 할 수 있도록 편의기능을 제공함
+	  - vscode가 이를 좀 편하게 할 수 있도록 편의기능을 제공함
 	- 위의 병합을 사용했을 때 각 branch의 commit들을 모두 가지고 오고 시간순으로 배열해 보여줌.
-- `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용
+- `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용(switch와 checkout 둘 다 같은 명령어지만 git이 버전 업데이트를 하면서 이름이 좀 바뀐 것 뿐이다. 둘 다 사용 가능하다.)
 
 ## remote 관련
 
