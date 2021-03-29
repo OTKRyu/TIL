@@ -12,7 +12,7 @@ authorization : 권한 확인
 
 이를 구현하긴 위한 form들은 미리 built-in되어있음(UserCreationForm, AuthenticationForm 등등)
 
-이런 폼 중 UserCreationForm와 UserChangeForm은 modelForm으로 기본적으로 auth.User와 연결되어 있으므로 만약 다른 유저 모델을 쓸 것이라면 유저모델을 대체해줘야한다. 그리고 이렇게 modelForm을 상속받아 쓸 떄는 Meta도 같이 상속시켜주는 것이 좋다. 상위 클래스가 있으니 어떤 기능을 쓸 때 custom에 없으면 상위클래스가서 찾아서 잘 작동하겠지만, 좋은 방법이 아니다.
+이런 폼 중 UserCreationForm와 UserChangeForm은 modelForm으로 기본적으로 auth.User와 연결되어 있으므로 만약 다른 유저 모델을 쓸 것이라면 유저모델을 대체해줘야한다. 딱 이 2개만 그렇기 때문에 나머지는 문제없이 사용할 수 있다. 그리고 이렇게 modelForm을 상속받아 쓸 떄는 Meta도 같이 상속시켜주는 것이 좋다. 상위 클래스가 있으니 어떤 기능을 쓸 때 custom에 없으면 상위클래스가서 찾아서 잘 작동하겠지만, 좋은 방법이 아니다.
 
 장고는 세션과 미들웨어를 사용하여 인증 시스템을 request객체에 연결
 
@@ -67,7 +67,7 @@ class UserForm(UserCreationForm):
   - is_authenticated attribute: 
     - User클래스의 속성중 하나로 User에 대해서는 항상 True, AnonymousUser에 대해서만 항상 False
     - 다만 이는 클래스가 뭔지만 판단하는 거지, 활성화가 되어있는지 혹은 권한을 가지고 있는지 같은 상세한 부분은 검사하지 않는다.
-    - 이를 이용해 DTL의 if로 html상의 분기를 줄 수 있다. 다만 이는 보여지는 부분만 바꾼것이기 때문에 강제로 접근하고자 하거나 하면 얼마든지 접근이 가능하다.
+    - 이를 이용해 DTL의 if로 html상의 분기를 줄 수 있다. 
   - login required decorator
     - `from django.contrib.auth.decorators import login_required`
     - 사용자가 로그인 했는지 확인하는 데코레이터
@@ -86,9 +86,9 @@ from django.contrib.auth import login as auth_login
 
 def login(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST) # 다른 폼과는 다르게 첫 번째 인자로 reqeust, 두 번째 인자로 데이터가 들어간다.
+        form = AuthenticationForm(request, data=request.POST) # 다른 폼과는 다르게 첫 번째 인자로 reqeust, 두 번째 인자로 데이터가 들어간다. 세션과 관련된 것들은 모두 첫 번째 인자로 request가 들어간다.
         if form.is_valid(): # 보통 폼과는 다르게 AutehnticaitonForm.is_valid()는 user db에 접근해 실제로 있는 유저인지를 확인까지 해준다.
-            auth_login(request, form.get_user()) # 세션 create 하는 내장 함수, 첫 번째 인자로 request, 두 번재 인자로 user가 들어간다. 이 때의 session관련 정보는 db의 django.session에 저장된다. django가 설정하는 session은 기본적으로 permanent session이다.
+            auth_login(request, form.get_user()) # 세션 create 하는 내장 함수, 첫 번째 인자로 request, 두 번재 인자로 user가 들어간다. 이 때의 session관련 정보는 db의 django.session에 저장된다. django가 설정하는 session은 기본적으로 permanent session이다. request의 세션부분을 조작해야하기 때문에 첫 째 인자로 request를 받는다.
             return redirect('articles:index')
     else:
         form = AuthenticationForm()
@@ -113,9 +113,9 @@ def logout(request):
 
 ## user crud
 
-장고가 기본적으로 유저와 관련된 db나 이런걸 만들어주기 때문에 어떤 user모델을 쓸 건지를 기본값으로 적어놓는다. 만약 이를 바꾸고 싶다면 setting.py에 AUTH_USER_MODEL에 적어서 경로를 바꿔주면 장고가 알아듣고 기본 유저모델을 자기가 만든 유저모델로 바꿔준다. 이 때 완전한 경로를 적는 것이 아니라 `'accounts.User'`정도로만 써줘도 장고가 알아서 경로를 잡는다.  사이에 들어갈 models는 써주지 않아도 된다. 장고 내부의 원리가  AUTH_USER_MODEL이 하나일 때를 기준으로 하고 있기 때문에 이에 해당하는 것은 꼭 하나만 해야한다.
+장고가 기본적으로 유저와 관련된 db나 이런걸 만들어주기 때문에 어떤 user모델을 쓸 건지를 기본값으로 적어놓는다. 만약 이를 바꾸고 싶다면 setting.py에 AUTH_USER_MODEL에 적어서 경로를 바꿔주면 장고가 알아듣고 기본 유저모델을 자기가 만든 유저모델로 바꿔준다. 이 때 완전한 경로를 적는 것이 아니라 `'accounts.User'`정도로만 써줘도 장고가 알아서 경로를 잡는다.  사이에 들어갈 models는 써주지 않아도 된다. 장고 내부의 원리가  AUTH_USER_MODEL 혹은 auth.User 둘 중 하나일 때를 기준으로 하고 있기 때문에 이에 해당하는 것은 꼭 하나만 해야한다.
 
-이렇게 새로운 USER모델을 만들고 싶다면 accounts/models.py 에 추가해서 만들어주는 방법이 있다. 이렇게 사용하는 방법을 장고에서도 매우 추천하고 있고, 이렇게 해놓는 것이 만일을 위해서도 좋다. 만에 하나라도 user model을 프로젝트 도중에 바꿀 일이 생기게 된다면 기본 유저의 경우 바꾸기가 쉽지가 않다. 이를 미리 customuser model로 해놓았다면 그나마 변경을 시도할 수 있고, 확장 또한 기본 User클래스를 쓰는 것보다는 쉽게 구현할 수 있다.
+이렇게 새로운 USER모델을 만들고 싶다면 accounts/models.py 에 추가해서 만들어주는 방법이 있다. 이렇게 사용하는 방법을 장고에서도 매우 추천하고 있고, 이렇게 해놓는 것이 만일을 위해서도 좋다. 만에 하나라도 user model을 프로젝트 도중에 바꿀 일이 생기게 된다면 기본 유저의 경우 바꾸기가 쉽지가 않다. 이를 미리 customuser model로 해놓았다면 그나마 변경을 시도할 수 있고, 확장 또한 기본 User클래스를 쓰는 것보다는 쉽게 구현할 수 있다. 그렇기에 migration이 진행되기 전에 미리 만들어놓고 진행하기를 권장
 
 장고에서 미리 만들어놓은 AbstractUser라는 클래스가 있으므로 이를 상속받아와서 새로 만들어주면 내가 추가하고 싶은 것을 추가하고 덮어씌우고 싶은것은 덮어씌울 수 있다.
 
@@ -147,7 +147,7 @@ def index(request):
 # profile settings.LOGIN_REDIRECT에 accounts/profile로 등록되어 있다. 이 때 로그인한 유저의 정보만을 볼 것이라면 아래의 코드로 충분하지만 남들의 정보를 조회할 수 있게 만들고 싶다면 pk를 따로 추가한다거나 아니면 username을 받는다든지 해서 만들 수도 있다. username의 경우 무결성을 보장하는 필드로 만들 수 있으므로 pk처럼 써도 된다. 다만 user라는 이름을 쓸 경우 request.user와 겹치게 되므로 이런 혼선을 막기 위해 다른 이름을 쓰는 것을 권장한다.
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    context = {'user_profile':user,}
+    
     if request.user == user:
         if request.method == 'POST':
             form = CustomUserChangeForm(request.POST, instance = user)
@@ -156,7 +156,10 @@ def profile(request, username):
                 return redirect('accounts:profile', username=user.username)
         else:
             form = CustomUserChangeForm(instance = user)
-    context['form'] = form
+    context = {
+        'user_profile':user,
+        'form':form,
+    }
     return render(request, 'profile.html',context)
 ```
 
@@ -213,6 +216,21 @@ def profile(request, username):
 장고 인증 시스템의 핵심으로 하나의 User class만 존재하며 AbstractUser class의 상속을 받음
 
 AbstractUser는 AbstractBaseUser와 PermissionMixin을 상속받아서 만들어져 있고, user model을 구현하기 위한 기능을 모두 갖추고 있는 클래스이다. AbstractBaseUser도 나름 기능을 갖추고 있지만 AbstractUser만큼 기능이 다양하지 않고 쓰기 위한 준비가 더 많기 때문에 기본적으로는 AbstractUser를 쓴다.
+
+## admin
+
+다른 클래스와 같이 유저도 다를바 없다 다만 기본적으로 admin에 등록할 것들도 미리 만들어져있기 때문에 끌어오기만 하면 된다.
+
+```python
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import User
+
+admin.site.register(User, UserAdmin)
+```
+
+
+
 
 # vscode 단축키
 

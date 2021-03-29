@@ -46,7 +46,7 @@ urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # �
 html에서 이를 불러올 때는 아래의 코드를 이용해 파일을 넣을 곳에 대신 넣어주면 된다.
 
 ```html
-{{ appname.image.url }}, {{ appname.image.url }}
+{{ instance.image.url }}, {{ instance.image }}
 ```
 
 이 때 이미지 파일이 없다면 이로 인해 에러가 날 수 있기 때문에 이를 DTL의 if를 이용해 있을 때만 보여주도록 유도를 해야한다.

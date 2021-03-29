@@ -21,7 +21,7 @@ json의 경우 db에 접속할 필요 없이 그냥 loaddata 명령이 데이터
 
 고로 dbshell까지 들어가서 db에 데이터 넣듯이 넣는 수밖에 없다.
 
-### a many to one relationship(1:n)
+### many to one relationship(1:n)
 
 - foreign key(외래 키)
   - 한 테이블의 필드 중 다른 테이블의 행을 식별할 수 있는 키
@@ -138,7 +138,8 @@ class CommentForm(forms.ModelForm):
   article.comment_set.all()
     ```
 
-### ORM
+### many to many relationship(m:n)
 
-- `modelname.objects.count()` : sql의 count와 같다 db에서 숫자를 세어서 장고로 숫자만 가져온다.
-- 
+1대 n의 경우 하나의 댓글이 하나의 게시글에만 있을 경우처럼, 하나에 대해서 가지치는 형태로밖에 만들지를 못한다. 이런 한계를 극복하기 위해서 m:n 모델을 고민했다. 그 결과 나온 것이 중개모델로 두 개의 모델 사이의 관계성을 아예 새로운 테이블을 만들어 저장해놓는 것이다. 이 중개모델은 사실 양쪽의 모델과 1:n관계를 가진 테이블로 1:n 두개를 이어붙여 m:n으로 만든 것이다.
+
+다만 이 m:n용 중개테이블을 만들 때 하나의 참조 필드를 정해서 만들기 때문에 둘 다 역참조를 하든가, 혹은 하나만 역참조를 하든가 해야한다. 이게 중개모델을 직접 참조해가면서 자료를 끌어오는 방법과 그냥 통과해서 가져오는 2가지 방법이다. 참조필드에 해당하는 쪽에서 역참조를 하지 않고 바로 데이터를 가져올 때 쓰는 것이 through option이다.

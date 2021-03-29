@@ -53,7 +53,7 @@ dynamic web application program
     - SESSION_COOKIE_AGE: 이 항목의 경우 장고가 내장하고 있는 세션 발급 기능을 쓸 때 세션을 얼마나 길게 유지할 지를 설정해 줄 수 있다. 
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
-  - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다. 기본적으로 view와 직접 연결을 하는 것과 가능하나, app이 많아질 경우 masterapp에서 이를 다 연결해놓는 것은 유지 보수 측면에서 좋지 않으므로 include함수를 이용해 각 앱의 ulrs.py로 옮기는 역할을 더 많이 한다.
+  - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다. 기본적으로 view와 직접 연결을 하는 것과 가능하나, app이 많in아질 경우 masterapp에서 이를 다 연결해놓는 것은 유지 보수 측면에서 좋지 않으므로 include함수를 이용해 각 앱의 ulrs.py로 옮기는 역할을 더 많이 한다.
 - `templates` : 앱에 들어갈 base templates를 놓는 곳으로 다른 앱들에서 공통으로 쓸  templates를 가져다놓는다. 이 폴더는 앱과는 다르게 장고가 이를 인식하지 못한다. 즉 새로 경로를 설정해줘야만한다. 이 경로를 설정할 때 settings.py에서 `TEMPLATES`의 `DIRS`에 BASE_DIR/'firstpjt'/'templates' 처럼 추가를 해줘야한다. 이 `DIRS`는 그 아래에 있는 `APP_DIRS`가 찾을 templates폴더 외에 것을 찾을 목록에 추가하는 역할을 한다. 여기서 `BASE_DIR`은 프로젝트 생성시의 모든 걸 담고 있는 폴더를 의미하고, 절대 경로가 바뀌더라도 프로젝트 루트의 위치를 그때마다 잡아주는 역할을 한다. 관습적으로 마스터 앱이나 혹은 프로젝트 root에 만드는 편이다.
 
 ### app(이름은 꼭 '복수형'으로, 생성(startapp) 후에 등록할 것)
@@ -89,6 +89,8 @@ dynamic web application program
 
 - DTL이 파이썬이랑 비슷하다, 다만 같은 것은 아니고 파이썬으로 실행되는 것도 아니다.
 
+- 이렇게 출력할 때 단순한 데이터를 출력하는 것보다 사람들이 자주 쓰는 표현으로 쓰는 것을 선호할 수 있는데 이럴 때는 django.contrib.humaize, 혹은 django humanize 문서를 참조하길 바란다. 그리고 이는 장고의 기본 세팅에 들어있지 않으므로 사용하기 위해선 app에도 추가해주고 templates에도 load를 해줘야 한다.
+
 - DTL
   1. variable(사실상 print다)
      - `{{ variable }}` 형식으로 써놓고 render함수에서 template파일을 받을 때 이를 삽입해줌, 중괄호와 변수명 사이를 스페이스로 좀 띄워놓는 것을 권장
@@ -113,7 +115,7 @@ dynamic web application program
        - `{% block content %}~{% endblock%}` : 부모 템플릿에서는 자식에서 바뀔만한 곳(override)을  block으로 지정하고, 자식 템플릿에서는 이 곳에 실제로 코드를 작성해 다르게 만들곳을 만든다.
        - endblock에서도 이름을 붙일 때가 있는데 여러 블록이 중첩되어 있을 경우 구분하기 위해 쓴다.
        - `{% extends 'base.html' %} ` : 받아올 부모의 것을 가져온다. 이 태그는 꼭 최상단에 존재해야한다.
-       - 추가적으로 `{% include 'other.html' %}` 을 이용하여 다른 html의 구조를 가져올 수 있다. 이를 이용하여 코드를 다 분리시킬 수 있으며 유지보수를 더 쉽게 만들 수 있다.
+       - 추가적으로 `{% include 'other.html' %}` 을 이용하여 다른 html의 구조를 가져올 수 있다. 이를 이용하여 코드를 다 분리시킬 수 있으며 유지보수를 더 쉽게 만들 수 있다. 작동원리를 보면 other.html의 문서내용을 그대로 붙여넣는 것으로 django html의 기능까지 모두 잘 작동한다. 다만 block의 경우 뚫어놓은 곳과 채울 곳이 쌍으로 작동해야하기 때문에 잘못 넣을 경우 작동하지 않는다.
   4. comments
      - `{# lorem ipsum #}`
    - 여러 줄의 주석은 `{% comment %} 내용 {%endcomment %}` 활용

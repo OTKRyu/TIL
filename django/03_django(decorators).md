@@ -16,3 +16,6 @@
   - `@require_POST` : method가 POST가 아니면 작동 안함
   - `@require_safe` : method가 GET이거나 HEAD로 온 경우만 받음. 이런 요청방식은 대체로 권한을 많이 안 주는 method들이기 때문에 안전하다고 생각해서 이런 이름이 붙음
   - 실제로 작동하는 지 시험해보기 위해서는 get과 post외에도 다른 method로 보내볼 필요가 있는데 브라우저로는 이런 기능을 할 수 없기 때문에, postman과 같은 api를 이용하여 시험해볼 수 있다.
+- login 관련(`from django.contrib.auth.decorators`)
+  - `@login_require` : 로그인이 필요한 작업일 경우 이 데코레이터를 붙여두면 자동으로 로그인된 사용자인지 아닌지를 확인해 준다. 추가적으로 어디를 들어가려다 로그인에 막혔는지 request.GET['next']라는 곳에 저장해 두므로 이를 활용할 수 있다. 자세한 내용은 authentication 참조
+
