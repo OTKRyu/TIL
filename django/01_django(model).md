@@ -64,6 +64,21 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
   - `instancename.save()`를 하면 그제서야 db에 전송되어 쿼리로 등록이 된다.
   - 혹은 `create(title='third',content='django')`와 같이 데이터를 바로 넘겨서 만드는 방법도 있다.
   - sql에서의 동작 원리와 같이 장고에서 만들 때도 받은 정보가 모델의 항목을 제대로 가지고 있는지 아닌지를 확인한다. 이 때 액세스에서 유각 항목의 유무을 직접 설정하던 것과 달리 여기서는 default값이 있으면 항목의 유무에 어긋나더라도 일단 default값을 넣지만, default 설정조차 없을 경우 에러가 난다.
+  - 여러 개의 더미 데이터를 만들 때 이런 코드를 쓴다.
+  
+  ```python
+  from faker import Faker # 더미데이터를 만들기 위해 가상 데이터를 만들어주는 라이브러리다.
+  
+  class Person(model.Model):
+      @classmethod
+      def dummy(cls,n):
+          f = Faker()
+          for _ in range(n):
+              cls.objects.create(name=f.name())
+  ```
+  
+  
+  
 - read
   - `all()` : 존재하는 모든 쿼리셋을 가져온다.
   - `get()` : ()내부에 조건을 넣으면 조건에 맞는 레코드 하나를 가져온다.  없다면 존재하지 않는다는 에러가, 2개 이상이면 값이 여러개가 있다는 에러가 난다. 고로 `get()`은 딱 하나 있는 값을 찾을 때 쓰는 편이며, 이를 항상 보장하는 것은 pk뿐이기때문에 대체로 pk로 조회할 때 쓴다.
@@ -75,6 +90,7 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
     - `from django.db.models.functions import Concat` : db상에서 두 개의 str 컬럼을 붙여낼 때 쓰는 기능이다.
     - `from django.db.models import Count(columnname)` : columnname에 해당하는게 몇개인지를 세어주는 명령어로 연결관계가 존재할 경우 하나의 column에 여러 개의 연결이 있을 수 있게 된다. 이를 세기 위해서 쓰는 함수이다. 이렇게 하면 본래 db에 쿼리를  2~3번 날리는 일을 한번에 처리할 수 있게 된다.
   - `aggregate()` : 쿼리셋 하나가 아닌 테이블 전체나 일부분에 대한 연산을 수행해주는 명령어 이다. 다른 함수들과 조합하여 쓰인다.
+  - `.iterator()` : 쿼리문이 요청한 자료 중에서도 필요한 내용만을 캐시에 올렸다가 쓰고 바로 내릴 수 있게 만드는 옵션이다.
   - options
     - `.values('columnname',)` : sql에서 SELECT 바로 뒤에 뭘 불러올 건지에 대해서 지정하는 곳이다. 안 적으면 기본값으로 전부 가져온다.
     - `.count()` : sql의 count와 같다 db에서 숫자를 세어서 장고로 숫자만 가져온다.
@@ -89,9 +105,13 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
     - `__startswith`, `__endswith` : 시작할 때나 끝날 때 이 값이 맞는 지를 검사한다.
     - sql에서 쓰던 와일드 카드 `_` ,`%` 중 장고 orm에서는 `%` 만 사용가능하다. 그 이상을 하려면 정규표현식(regex)를 사용한다.
     - regex란 패턴을 어떻게 표현할 지에 대해 정해놓은 기준으로 python의 re 라이브러리가 이에 대한 기능을 가지고 있다.
+  
 - update
+  
   - `save()`: pk값이 없는 값이라면 값들을 새로 추가해가면서 db에 추가하지만, pk값을 가지고 있는 객체를 빼와서 인스턴스에 할당하고 수정한 후 `save()`를 하는 경우 이 매서드가 있던 것을 수정한 것으로 인식하여 원래 값을 수정한다.
+  
 - delete
+  
   - `delete()` : 레코드를 인스턴스에 할당한 후 이 매서드를 실행하면 이 인스턴스와 같은 리코드를 db에서 삭제한다.
 
 ### query
@@ -150,6 +170,7 @@ class Article(models.Model):
   - `makemigrations` : 모델을 변경한 것에 기반한 새로운 migration을 만들 때 사용, 이 때 원래 있던 migration파일에 수정을 하게 되면 이전의 자료들을 어떻게 변경할 것인지에 대해서 물어보게 된다. 이 때 1번은 직접 수정하는 것이고 2번은 이 과정을 일단 끝내고 models.py에 있는 class를 변경해 default값을 넣어달라는 뜻이다. 1번은 선택할 경우 데이터타입에 따라 장고가 기본적으로 가지고 있는 default값을 넣어줄 것인지를 물어본다. 이 때 그냥 enter누르면 장고가 알아서 해주긴 하는데 잘 보고 결정해야한다. 기본적으로 이 명령어를 쓰면 버전 관리를 하듯 migration을 버전별로 모두 저장을 해준다.
     - 추가로 `appname`을 쳐주면 이 앱에 대한 migration만을 만들어준다.
   - `migrate` : 생성된 migration을 db에 반영하기 위해 사용, 이를 통해 모델과 db의 동기화가 이루어짐
+    - 추가로 `appname`을 쳐주면 이 앱에 대한 migration만을 진행한다.
   - `sqlmigrate appname num` : appname에 해당하는 num번째 마이그레이션에 대한 sql구문이 어떻게 되는지 보여준다.
   - `showmigrations ` :  마이그레이션파일들이 migrate가 됐는지 안 됐는지 여부를 확인할 때 쓴다. X가 되었다는 뜻이고 빈 것이 안 되었다는 뜻이다.
 - 이 때 장고가 어디까지 migration이 진행이 되었는지를 db.sqlite3에 django_migrations에 저장해놓는다.

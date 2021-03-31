@@ -108,6 +108,8 @@ dynamic web application program
      - 출력 텍스트 가공, 반복 논리를 수행하여 더 복잡한 일들을 수행
      - 일분 태그는 시작과 종료 태그가 필요( `{% tag %}...{% endtag%}`)
      - 24개 정도의 태그가 내장되어 있다.
+     - `{% with followings=person.followings.all followers=person.followers.all%}`,`{% endwith %}`
+       - 이 구문을 사용하면 이 사이에 있는 구문들에 대해서는 with안에 쓰인 변수 할당문이 작동하는 것처럼 쓸 수 있다.
      - `{% url 'name' %}` : name이라는 이름의 url을 자기가 찾아서 넣어주는 역할을 한다.
        - 만약 url에 해당하는 path가 추가 arguments를 필요로 한다면 `{% url 'name' argument argument %}` 식으로 넘겨주면 된다.
        - space로 구분하고 이 인자를 넘기는 것은 파이썬의 함수의 인자를 넘기는 것과 똑같이 기능하기 때문에 순서대로 넘기는 것도 가능하고 키 밸류로 넘기는 것도 가능하다.
