@@ -77,7 +77,7 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
               cls.objects.create(name=f.name())
   ```
   
-  
+  - `get_or_create()` : 데이터를 받아 이와 일치하는 데이터가 있으면 가져오고 없으면 만들어준다. 이 때 반환값이 (객체, bool)형식이기 때문에 객체만 받아보려면 `[0]`를 해줘야한다. bool에는 가져왔다면 False를 만들었다면 True값이 반환된다.
   
 - read
   - `all()` : 존재하는 모든 쿼리셋을 가져온다.
