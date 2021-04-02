@@ -23,7 +23,18 @@ db의 종류
 rdbms에서 데이터베이스에게 명령을 내리기 위해 필요한 명령 언어로 크게
 
 - ddl(data define language)
+  - create
+  - drop
+  - alter
 - dml(data modify language)
-- d
+  - insert
+  - update
+  - delete
+  - select
+- dml(데이터 제어 언어)
+  - grant
+  - revoke
+  - commit
+  - rollback
 
 3가지로 나뉜다.

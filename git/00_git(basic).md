@@ -10,7 +10,7 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 - `git remote add origin 'https~'` : 온라인 상의 주소를 origin이라는 이름으로 저장
 - `git config user.name` : 깃 폴더에 찍을 인장의 내용중 이름을 설정
 - `git config user.email ` : 깃 폴더에 찍을 인장의 내용 중 이메일을 설정
-  - 공통적으로 --global을 쓰고 user를 치면 공통적으로 계속 쓸 고정된 인장을 생성.
+  - 공통적으로 --global 옵션을 주면 공통적으로 계속 쓸 고정된 인장을 생성.
 
 ## 조회
 - `git log` : commit들을 보여줌
@@ -27,9 +27,15 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 - `git push origin 'branchname'` : origin이란 branchname에 commit을 업로드
 
 ## 출력
-- `git pull` : clone으로 가져온 git 폴더의 commit 내용을 받아옴
-- `git clone 'https~'` : 웹상의 git폴더를 내 컴퓨터에 폴더로 받아옴
-  - 이 때 url을 잘 보면 앞에 받아올 파일 이름과 뒤에 저장할 이름이 나오는데 이를 수정하면 저장할때 이름을 바꿔서 저장할 수 있다.
+
+출력의 경우 데이터를 가져가는 행위이므로 오픈 소스가 아니라면 제약이 걸리기 마련이다. 대부분의 경우 계정을 요구한 후 그 계정의 권한만큼 가져갈 수 있게 되어있는 편인데,  이 때 window에서 내가 이런 과정을 거치는 것을 보고 이 정보를 컴퓨터 내에 저장을 해놓는다.
+
+그래서 그 다음부터는 자동적으로 계정을 보내게 되는데 이런 정보가 저장되어 있는 곳이 자격 증명 관리자이다.
+
+- `git pull remotename branchname` : 리모트의 브랜치에 해당하는 내용을 현재 작업중인 브랜치 위로 가져오게 된다. 이 때 순조롭게 병합이 되지 않는다면 merge때의 절차를 그대로 밟게 된다.
+  - clone으로 가져온 git 폴더의 경우 origin master가 기본적으로 세팅이 되어 있으므로 `git pull`만 쳐도commit 내용을 자동으로 가져오게 된다. 
+  - 이 때 중요한게 자신이 있는 branch 위치다. master 브랜치에서 이를 진행하면 master 브랜치로 가져와 병합하려 시도하게 된다. 이 때 local에서 merge할 때와 동일한 절차를 밟게 된다. 이 절차가 끝나고 commit을 한 번 남겨주면 그제서야 pull이 완료되게 된다.
+- `git clone 'path' 'dirname'` : 웹상의 있는 깃 리포를 그대로 본 떠 내 working directory로 가져온다. 이렇게 할 경우 remote origin이 기본적으로 clone을 뜬 주소로 설정된다. 추가적으로 이렇게 가져올 시 웹상의 깃 리포의 이름을 본 따 폴더를 만들고 그 안에 깃 리포를 복제해 넣어준다. dirname을 적어주면 dirname으로 폴더를 생성한다. 
 
 ## 수정
 - `git restore` : staging된 내용을 되돌림, 이는 이미 commit된 적이 있는 파일을 staging이 되기전으로 돌리는 명령어다. 
@@ -87,5 +93,4 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 
 웹상에 올려놓은 branch로 local branch보다 상위 권한을 지니며 결국 remote의 branch를 기준으로 일을 진행하게 된다.
 
-- `git remote add name url` : name으로 url을 저장
 

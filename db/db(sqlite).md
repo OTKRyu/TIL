@@ -75,3 +75,6 @@
   * `UPDATE tablename SET column1=value1, column2=value2 ... WHERE condition` : tablename에 해당하는 테이블의 condition에 해당하는 얘들의 데이터를 SET에 써져있는 걸로 변경 
 
   * 테이블 이름을 바꾼다든지 column을 더 추가한다든지 하는 명령어가 추가로 있으나 sqlite에서는 잘 쓰지 않는 편이기도 해서 필요하다면 자료를 찾아보길 바란다.
+  
+    * ALTER TABLE oldname RENAME TO newname;
+    * ALTER TABLE tablename ADD COLUMN columnname datatype;

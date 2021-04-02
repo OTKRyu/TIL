@@ -64,3 +64,6 @@ Command-line interface의 약자로 말그대로 명령어 한줄씩 써서 작�
 - `cp 대상경로 복사할경로` 
   - 대상경로에 있는 파일을 복사할 위치에 복사한다.
   - `-r` 옵션을 주면 대상 폴더에 있는 모든 파일을 그대로 가져온다.
+- `grep 'objectstring' targetstring` : 파일 안에서 objectstring에 해당하는 내용이 있는지를 찾아서 출력해 준다.
+  - global regular expression print
+- `|` : 리눅스에서 앞의 파일을 뒤의 명령의 삽입 장소에 넣어준다. ex)`pip list | grep 'django'`

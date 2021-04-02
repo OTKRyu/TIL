@@ -187,12 +187,14 @@ def profile(request, username):
   - 그 외에도 PasswordChangeForm같은 것도 있다. 이 때 경로가 profile/password로 기본적으로 설정되어 있기 때문에 기본 설정을 바꿀 것이 아니라면 이 url로 가도록 짜줘야한다. 이 때 프로필 경로가 <str>로 되어있으면 password조차 str로 판단해서 profile로 빠질 수 있으므로 password를 먼저 탐색하게 해야한다. 그리고 비밀번호 변경하면 다시 로그인하도록 logout이 자동으로 된다. 이를 막고 싶으면 session을 업데이트 해줘야하는데 `from django.contrib.auth import update_session_auth_hash`를 사용하면 가능하다.
 
     ```python
+    from django.contrib.auth import update_session_auth_hash
     @login_required
     def change_password(request):
         if request.method=='POST':
             form = PasswordChangeForm(request.user, request.POST)
             if form.is_valid():
                 form.save()
+                update_session_auth_hash(request.form.user) # 로그인이 풀리는 걸 막기 위해 session을 업데이트한다.
                 return redirect('accounts:profile', request.user.username)
         else:
             form = PasswordChangeForm(request.user)
