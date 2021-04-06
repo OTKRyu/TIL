@@ -32,8 +32,6 @@ def bubble_sort(a):
                 a[j],a[j+1] = a[j+1],a[j]
 ```
 
-
-
 - counting
 
   - 정수나 정수로 표현가능한 자료에만 적용가능하며 미리 할당을 해야하는 경우 최대 정수를 알아야 할당해놓을 수 있다.
@@ -57,8 +55,6 @@ def bubble_sort(a):
       return b
   ```
 
-  
-
 - selection
 
   - 가장 작은 값의 원소부터 차례대로 선택하여 맨 앞의 원소와 교환하고 다음번에는 맨 앞의 원소를 제외하고 진행하여 완성
@@ -74,8 +70,6 @@ def selection_sort(a):
                 min = j
         a[i], a[min] = a[min], a[i]
 ```
-
-
 
 - quick
   - 주어진 배열을 두 개로 분할한 뒤 각각을 정렬
@@ -102,12 +96,8 @@ def partition(a, begin, end): # 호어 파티션
     return r
 ```
 
-
-
 - insetion
 - merge
-
-
 
 ### 순열
 

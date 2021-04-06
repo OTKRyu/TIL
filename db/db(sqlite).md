@@ -76,5 +76,5 @@
 
   * 테이블 이름을 바꾼다든지 column을 더 추가한다든지 하는 명령어가 추가로 있으나 sqlite에서는 잘 쓰지 않는 편이기도 해서 필요하다면 자료를 찾아보길 바란다.
   
-    * ALTER TABLE oldname RENAME TO newname;
-    * ALTER TABLE tablename ADD COLUMN columnname datatype;
+    * `ALTER TABLE oldname RENAME TO newname;`
+    * `ALTER TABLE tablename ADD COLUMN columnname datatype;`

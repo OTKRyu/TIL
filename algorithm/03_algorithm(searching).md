@@ -85,7 +85,7 @@ def binary_serch(a, key):
    2. 방문하지 않은 정점이 없으면, 탐색의 방향을 바꾸기 위해 스택을 pop하여 받은 가장 마지막 방문 정점을 v로 하여 다시 2)를 반복
 3. 스택이 공백이 될 때까지 2.반복
 
-```
+```python
 # psudo code
 visited = [], stack = []
 dfs(v):
