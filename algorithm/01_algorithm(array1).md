@@ -97,7 +97,48 @@ def partition(a, begin, end): # 호어 파티션
 ```
 
 - insetion
-- merge
+- merge(merge sort)
+  - 여러 개의 정렬된 자료의 집합을 병합하여 한 개의 정렬된 집합으로 만드는 방식
+  - 자료를 최소 단위의 문제까지 나눈 후에 차례대로 정렬하여 최종 결과를 얻어냄. 
+  - top-donw방식
+  - 항상 nlogn의 시간 복잡도를 가짐
+  - 과정
+    - 분할 단계 : 최소 크기의 부분집합이 될 때까지 분할
+    - 병합 단계 : 2개의 부분집합을 정렬하면서 하나의 집합으로 병합, 이 때 합칠 때 하위 항목 두 개를 작은거부터 비교하면서 채워나간다.
+
+```python
+# 가장 간략한 코드로 구현한 것, 병합정렬의 원래 속도를 내고 싶다면, pop이나 append가 아닌 인덱스 접근으로 만들어야한다.
+def merge_sort(list m):
+    if len(m) == 1: return m
+    middle = length(m) // 2
+    for x in range(middle):
+        left.append(m[x])
+    for x in range(middle, length(m)):
+        right.append(m[x])
+    left = merge_sort(left)
+   	right = merge_sort(right)
+    return merge(left, reight)
+
+def merge(left, right):
+    result = []
+    while 1: 
+    	if len(left) > 0 and length(right) > 0:
+        	if left[0] <= right[0]:
+            	result.append(left.pop(0))
+        	else:
+            	result.append(right.pop(0))
+        elif len(left) > 0:
+            result.append(left.pop(0))
+        elif len(right) > 0:
+            result.append(left.pop(0))
+        else:
+            break
+    return result
+```
+
+
+
+
 
 ### 순열
 
