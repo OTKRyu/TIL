@@ -126,7 +126,7 @@ def dfs(v):
     stack.append(v)
 	while stack:
 		v = stack.pop()
-		if not visited[v]
+		if not visited[v]:
 			visit(v)  #v에서 해야할 일
 			for w in adjacency(v)
 				if not visited[w]
@@ -141,6 +141,7 @@ def dfs(v):
 - 인접한 정점들을 거리에 따라 순서대로 계산하기 때문에 최단거리와 같이 거리가 얼마일때를 구해야하는 문제들에 활용하기 좋다.
 
 ```python
+# 여러 가지 방법이 있지만 될 수 있으면 중복을 피하기 위해 점을 찾았을 때 방문처리를 하는 것이 좋고, 거리에 따라 다른 구분을 해야하는 경우도 반복 자체에 뭔가를 하는 것보다는 표시할 수 있는 자료구조를 만들어 따로 저장하는 편이 좋아보인다.
 def bfs(g,v): # 될 수 있는 한 큐 한개짜리 쓰는게 좋은 것 같다 경험상 뭔가 문제가 잘 안 터진다.
     visited = [0]*n # n: 정점의 개수
     queue = []
