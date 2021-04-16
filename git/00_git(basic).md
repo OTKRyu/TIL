@@ -89,6 +89,10 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 	- 위의 병합을 사용했을 때 각 branch의 commit들을 모두 가지고 오고 시간순으로 배열해 보여줌.
 - `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용(switch와 checkout 둘 다 같은 명령어지만 git이 버전 업데이트를 하면서 이름이 좀 바뀐 것 뿐이다. 둘 다 사용 가능하다.)
 
+## git 폴더 관련
+
+- `git submodule url foldername` : 내 깃 폴더 안의 다른 깃폴더를 클론을 떠와서 가져왔을 경우 깃 폴더 안에 깃폴더가 생기는 참사가 일어난다. 이를 방지하기 위해서 최상위의 .git만 남기고 하위 폴더에 있는 깃 폴더를 submodule로 remote와의 연결을 유지한 채 통합시킨다.
+
 ## remote 관련
 
 웹상에 올려놓은 branch로 local branch보다 상위 권한을 지니며 결국 remote의 branch를 기준으로 일을 진행하게 된다.
