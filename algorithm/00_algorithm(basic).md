@@ -377,10 +377,19 @@ def backtracking(v):
 			write the solution
 		else:
 			for u in each child of v:
-				checknode(u)		
+				checknode(u)
+                
+def backtrack(v):
+    if is_sol(v):
+        print(v)
+    else:
+        possibles = possible_check(v)
+        if possibles:
+            for possible in possibles:
+                backtrack(possible)
+        else:
+            return
 ```
-
-
 
 #### 백트래킹과 dfs와의 차이
 

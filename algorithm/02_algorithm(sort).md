@@ -64,15 +64,17 @@ def selection_sort(a):
   - 주어진 배열을 두 개로 분할한 뒤 각각을 정렬
   - 분할할 때 기준 아이템(pivot item)을 기준으로 작은 것은 왼편, 큰 것은 오른편에 위치
   - 평균 시간 복잡도 nlogn 최악의 경우 n^2
+  - 이 때 피봇을 어떤 값으로 정하냐에 따라 파티션이 변하는데 단순히 중간 인덱스에 해당하는 것을 고를수도, 중간, 끝, 시작 이렇게 세개의 값을 비교해 뽑을 것 등등 다양한 방법이 있다.
+  - 대체로 좋은 성능을 보이나 특정 경우에는 버블정렬과 같은 결과가 되긴 한다.
 
 ```python
 def quick_sort(a, begin, end):
     if begin < end:
         p = partition(a, begin, end)
         quick_sort(a, begin, p-1)
-        quickSort(a, p+1, end)
+        quick_sort(a, p+1, end)
 def partition(a, begin, end): # 호어 파티션
-    pivet = (bigin + end) //2
+    pivot = (bigin + end) //2
     l = begin
     r = end
     while l<r:
@@ -83,6 +85,18 @@ def partition(a, begin, end): # 호어 파티션
                 a[l],a[r] = a[r], a[l]
     a[pivot], a[r] = a[r], a[pivot]
     return r
+# 기본 아이디어는 왼쪽에서 오른쪽으로 진행하면서 피봇보다 작은 것은 그대로두다가 큰 것을 만나는 순간을 기준점으로 두고
+# 이 기준점부터 피봇보다 작은 것을 왼쪽의 기준점과 교환해하고 기준점을 증가시킨다. 그러면 기준점 기준으로 왼쪽에는 전부
+# 피봇보다 작게, 오른쪽은 전부 피봇보다 크게 만든다.
+def partition(A,p,r):#맨 오른쪽 값이 피봇, lomuto parition
+    x = A[r]
+    i = p-1
+    for j in range(p,r-1):
+        if A[j] <= x:
+            i += 1
+            swap(A[i],A[j])
+    swap(A[i+1],A[r])
+    return i+1
 ```
 
 - insetion
@@ -91,9 +105,11 @@ def partition(a, begin, end): # 호어 파티션
   - 자료를 최소 단위의 문제까지 나눈 후에 차례대로 정렬하여 최종 결과를 얻어냄. 
   - top-donw방식
   - 항상 nlogn의 시간 복잡도를 가짐
+  - 외부 정렬의 기본이 되는 정렬 알고리즘이며, 코어가 여러개인 프로세서에서 병렬화하기 쉬운 병합 정렬이 쓰인다.
   - 과정
     - 분할 단계 : 최소 크기의 부분집합이 될 때까지 분할
     - 병합 단계 : 2개의 부분집합을 정렬하면서 하나의 집합으로 병합, 이 때 합칠 때 하위 항목 두 개를 작은거부터 비교하면서 채워나간다.
+  - 퀵과의 다른 점 : 피봇의 필요성 유무, 이 후 병합의 필요성 유무
 
 ```python
 # 가장 간략한 코드로 구현한 것, 병합정렬의 원래 속도를 내고 싶다면, pop이나 append가 아닌 인덱스 접근으로 만들어야한다.
@@ -106,7 +122,7 @@ def merge_sort(list m):
         right.append(m[x])
     left = merge_sort(left)
    	right = merge_sort(right)
-    return merge(left, reight)
+    return merge(left, right)
 
 def merge(left, right):
     result = []
@@ -124,6 +140,11 @@ def merge(left, right):
             break
     return result
 ```
+
+- heap sort
+  - 최대 힙 혹은 최소 힙을 이용한 정렬이다
+  - 모든 수를 힙에 넣은 후 하나씩 빼오면서 정렬을 시킨다.
+  - nlogn이 걸리는 정렬이다.
 
 
 
