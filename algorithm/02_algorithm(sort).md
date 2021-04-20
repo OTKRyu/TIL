@@ -73,30 +73,36 @@ def quick_sort(a, begin, end):
         p = partition(a, begin, end)
         quick_sort(a, begin, p-1)
         quick_sort(a, p+1, end)
-def partition(a, begin, end): # 호어 파티션
-    pivot = (bigin + end) //2
-    l = begin
-    r = end
-    while l<r:
-        while(a[l]<a[pivot] and l<r) : l+=1
-        while(a[r]>=a[pivot] and l<r) : r -= 1
-        if l<r:
-            if l==pivot: pivot = r
-                a[l],a[r] = a[r], a[l]
-    a[pivot], a[r] = a[r], a[pivot]
-    return r
+def hoare(array, l, r):
+    pivot = l
+    i = l + 1
+    j = r
+    while i <= j:
+        if array[i] > array[pivot] and array[j] <= array[pivot]:
+            array[i], array[j] = array[j], array[i]
+            i += 1
+            j -= 1
+        elif array[i] > array[pivot]:
+            j -= 1
+        elif array[pivot] >= array[j]:
+            i += 1
+        else:
+            i += 1
+            j -= 1
+    array[pivot], array[j] = array[j], array[pivot]
+    return j
 # 기본 아이디어는 왼쪽에서 오른쪽으로 진행하면서 피봇보다 작은 것은 그대로두다가 큰 것을 만나는 순간을 기준점으로 두고
 # 이 기준점부터 피봇보다 작은 것을 왼쪽의 기준점과 교환해하고 기준점을 증가시킨다. 그러면 기준점 기준으로 왼쪽에는 전부
 # 피봇보다 작게, 오른쪽은 전부 피봇보다 크게 만든다.
-def partition(A,p,r):#맨 오른쪽 값이 피봇, lomuto parition
-    x = A[r]
-    i = p-1
-    for j in range(p,r-1):
-        if A[j] <= x:
+def lomuto(array, l, r): # 맨 오른쪽이 피봇
+    x = array[r]
+    i = l - 1
+    for j in range(l, r):
+        if array[j] <= x:
             i += 1
-            swap(A[i],A[j])
-    swap(A[i+1],A[r])
-    return i+1
+            array[i], array[j] = array[j], array[i]
+    array[i + 1], array[r] = array[r], array[i + 1]
+    return i + 1
 ```
 
 - insetion
