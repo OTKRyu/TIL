@@ -34,11 +34,11 @@ def bubble_sort(a):
   def counting_sort(a, k):
       b = [0]*(len(a))
       c = [0]*(k+1)
-      for i in range(0,len(b)):
+      for i in range(0,len(a)):
           c[a[i]] += 1
       for i in range(1, len(c)):
           c[i] += c[i-1]
-      for i in range(len(b)-1, -1, -1):
+      for i in range(len(a)-1, -1, -1):
           b[c[a[i]]-1] = a[i]
           c[a[i]] -= 1
       return b
@@ -106,6 +106,9 @@ def lomuto(array, l, r): # 맨 오른쪽이 피봇
 ```
 
 - insetion
+  - 도서관에서 책을 정렬할 때 쓰는 방법
+  - 자료 배열의 모든 원소들을 앞에서부터 차례대로 이미 정렬된 부분과 비교하여, 자신의 위치를 찾아냄으로써 정렬을 완성한다.
+  - O(n^2)의 시간 복잡도를 가진다. 다만 정렬이 되어있을 때 혹은 최선의 상황일 때는 n만에 끝나므로 정렬이 어느정도 되어 있다는 확신이 있을 때는 빠른 방법이다.
 - merge(merge sort)
   - 여러 개의 정렬된 자료의 집합을 병합하여 한 개의 정렬된 집합으로 만드는 방식
   - 자료를 최소 단위의 문제까지 나눈 후에 차례대로 정렬하여 최종 결과를 얻어냄. 
@@ -118,33 +121,47 @@ def lomuto(array, l, r): # 맨 오른쪽이 피봇
   - 퀵과의 다른 점 : 피봇의 필요성 유무, 이 후 병합의 필요성 유무
 
 ```python
-# 가장 간략한 코드로 구현한 것, 병합정렬의 원래 속도를 내고 싶다면, pop이나 append가 아닌 인덱스 접근으로 만들어야한다.
-def merge_sort(list m):
-    if len(m) == 1: return m
-    middle = length(m) // 2
-    for x in range(middle):
-        left.append(m[x])
-    for x in range(middle, length(m)):
-        right.append(m[x])
+def merge_sort(nums):
+    if len(nums) == 1:
+        return nums
+    middle = len(nums) // 2
+    left = nums[0: middle]
+    right = nums[middle:len(nums)]
     left = merge_sort(left)
-   	right = merge_sort(right)
+    right = merge_sort(right)
     return merge(left, right)
 
+
 def merge(left, right):
-    result = []
-    while 1: 
-    	if len(left) > 0 and length(right) > 0:
-        	if left[0] <= right[0]:
-            	result.append(left.pop(0))
-        	else:
-            	result.append(right.pop(0))
-        elif len(left) > 0:
-            result.append(left.pop(0))
-        elif len(right) > 0:
-            result.append(left.pop(0))
+    global lcnt
+    result = [-1] * (len(left) + len(right))
+    if right[-1] < left[-1]:
+        lcnt += 1
+    l = 0
+    r = 0
+    idx = 0
+    while 1:
+        if l < len(left) and r < len(right):
+            if left[l] <= right[r]:
+                result[idx] = left[l]
+                idx += 1
+                l += 1
+            else:
+                result[idx] = right[r]
+                idx += 1
+                r += 1
+        elif l < len(left):
+            result[idx] = left[l]
+            idx += 1
+            l += 1
+        elif r < len(right):
+            result[idx] = right[r]
+            idx += 1
+            r += 1
         else:
             break
     return result
+
 ```
 
 - heap sort

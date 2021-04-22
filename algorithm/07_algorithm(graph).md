@@ -229,6 +229,35 @@
    - 즉 같은 집합에 소속되어 있는지 아닌지를 통해 있다면 회로로, 아니라면 회로가 아닌 걸로 판단한다.
 3. n-1개의 간선이 선택될 때까지 2를 반복
 
+```python
+def kruskal(tree, n): # tree는 가중치 순으로 정렬이 되어있다고 가정하자, 최소신장 트리의 총 길이를 구하는 알고리즘
+    cnt = 0
+    idx = 0
+    result = 0
+    while cnt < n:
+        c = tree[idx] # c는 [정점, 정점, 가중치]로 되어있다.
+        if find(c[0]) == find(c[1]):
+            idx += 1
+        else:
+            result += c[2]
+            union(c[0], c[1])
+            idx += 1
+            cnt += 1
+    return result
+
+def union(x, y):
+    disjoints[find(y)] = find(x)
+
+
+def find(x):
+    if x == disjoints[x]:
+        return x
+    else:
+        return find(disjoints[x])
+```
+
+
+
 ##### prim algorithm
 
 1. 임의의 정점 하나 선택해서 MST에 추가

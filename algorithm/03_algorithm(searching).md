@@ -193,7 +193,9 @@ def BFS_recursion_with_depth(g, queue):
 ### 최단 경로
 
 - 정의 
+  
   - 간선의 가중치가 있는 그래프에서 두 정점 사이의 경로들 중에 간선의 가중치의 합이 최소인 경로
+  
 - 하나의 시작 정점에서 끝 정점까지의 최단경로
   - dijkstra algorithm(greedy)
     - 음의 가중치 허용하지 않음
@@ -206,8 +208,39 @@ def BFS_recursion_with_depth(g, queue):
       - 이 과정을 반복하면 시작점에서 다른 점까지 가는데에 필요한 최소비용들을 계속 뽑아낼 수 있다.
       - 그러다 모든 정점을 뽑아보면, 끝 정점으로 가는 최소비용도 뽑아낼 수 있게 된다. 
       - 매번 최솟값을 찾아다녀야되는 연산이기 때문에 정점마다 최소 힙을 만들어두면 조금 더 빠르게 진행할 수 있다.
+  
+  ```python
+  minimums = [inf for i in range(n)] 
+  # minimums는 최소 거리를 모아놓은 집합, ds는 그래프간 연결관계와 각 정점끼리의 거리를 모아놓은 인접행렬
+  while 1:
+      minimum = inf
+      for i in range(n):
+          if minimum > minimums[i] and check[i] == 0:
+              idx = i
+              minimum = minimums[i]
+      if idx == e:
+          break
+      else:
+          check[idx] = 1
+          for i in range(n):
+              if ds[idx][i] != inf and check[i] == 0:
+                  minimums[i] = min(minimums[i], minimums[idx]+ds[idx][i])
+          short = inf
+          for i in range(n):
+              if short > ds[idx][i] and check[i] == 0:
+                  s_idx = i
+                  short = ds[idx][i]
+          minimums[s_idx] = min(minimums[s_idx],minimums[idx] + short)
+          for i in range(n):
+              if ds[s_idx][i] != inf and check[i] == 0:
+                  minimums[i] = min(minimums[i], min(minimums[idx] + ds[idx][s_idx] + ds[s_idx][i], minimums[idx]+ds[idx][i]))
+  ```
+  
+  
+  
   - bellman-ford
     - 음의 가중치 허용
+  
 - 모든 정점들에 대한 최단 경로
   - floyd-warshall 
     - 음의 가중치 허용
