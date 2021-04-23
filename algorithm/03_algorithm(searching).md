@@ -236,11 +236,10 @@ def BFS_recursion_with_depth(g, queue):
                   minimums[i] = min(minimums[i], min(minimums[idx] + ds[idx][s_idx] + ds[s_idx][i], minimums[idx]+ds[idx][i]))
   ```
   
-  
-  
   - bellman-ford
     - 음의 가중치 허용
   
 - 모든 정점들에 대한 최단 경로
   - floyd-warshall 
     - 음의 가중치 허용
+    - 한점에서 다른 한점으로 갈 때 경유해서 갈 수 있는 모든 경우의 수를 고려해 그중 최솟값을 선택하는 방법이다.
