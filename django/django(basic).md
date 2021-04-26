@@ -39,3 +39,8 @@
 - appname/id/update/ : 단일 데이터 수정
 - appname/id/delete/ : 단일 데이터 삭제
 
+## 추가 라이브러리
+
+- django-seed 
+  - 더미데이터를 만들어주는 추가 라이브러리
+  - `python manage.py seed appname --number=num` : num개의 데이터를 appname에 해당하는 db에 생성해준다.

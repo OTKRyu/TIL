@@ -18,7 +18,7 @@ dynamic web application program
     - 장고의 경우 다소 독선적인 편이다.
 - 장점
   - 거의 모든 작업이 되어있기 때문에 그런 작업을 다시 할 필요없이 중요기능 구현에만 신경을 쓸 수 있게 해준다.
-- 모델-뷰-컨트롤러 모데 패턴(model-view-controller,mvc)
+- 모델-뷰-컨트롤러 모델 패턴(model-view-controller,mvc)
   - 소프트웨어의 디자인 패턴의 하나이다.
   - 다만 장고는 model-template-view라고 소개하고 있다.(하고있는 역할은 같다.)
   - model = 데이터베이스 구조를 잡고, db와의 연결을 관리 장고의 경우 orm이 db에 해줘야할 일을 대신 해주다보니 이 model단이 db관련 조작을 총괄한다, view = 중간 컨트롤러, template  = 레이아웃(화면)
@@ -69,23 +69,41 @@ dynamic web application program
 - `tests.py` : 테스트용 코드를 작성하는 곳
 
 - `urls.py` : 이 앱에서 쓸 view함수들을 모아놓은곳
+
 - 추가적으로 \<str:name>같은 것을 url에 붙여서 보내온 경우 이를 views에 있는 함수에서 인자로 받을 수가 있는데, 이를 variable routing(주소자체를 변수처럼 쓰는것)이라고 한다.
     - 이렇게 하면 request에서 일일히 정보를 뽑아낼 필요없이 url에 적혀있는 정보를 바로 변수로 받아서 함수에다 쓸 수 있다. 
     - str이 기본값이므로 생략가능하다.
     
-- `views.py` : view의 역할을 하는 파일
+- `views.py` : view의 역할을 하는 파일, 작성하는 법은 크게 두 가지로 function_based와 class_based가 있다. function_based는 url로 연결한 주소로 요청이 들어올 시 그에 해당하는 함수를 작동하게 만든 것이고, class_based는 장고에서만 지원하는 고유한 작성방법으로 class와 그 안의 요소들로 작동하게 만드는 것이다. 이 방법을 쓰면 django측에서 해놓은 것이 많기 떄문에 훨씬 간편하고 빠르게 백엔드를 만들 수 있다.
     - views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
       - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다. 그리고 세번째로 context라는 정보가 담긴 딕셔너리를 넣게 된다.
       - 추가로 항상 html만을 보내주는것이 아닌 다른 url로 보내는 것을 해야될 때도 있는데 이 경우 render와 같은 패키지에 있는 redirect라는 함수가 필요하다. 이 함수에 `'/practice/'`와 같이 직접 보낼 경로를 쓰거나 또는 urlname을 쓰면 그 쪽으로 이동시켜준다. 인자가 필요한 경우 `argumentname = real_argument`식으로 ,로 연결해 보내면 된다.
+      
     - `get_objects_or_404 from django.shortcuts import get_objects_or_404(class, kawrgs=value)` : 인자를 받아서 조회를 해보고 결과가 없으면 404페이지를 보내는 함수다. 
+
     - 오는 정보의 방법이 get이냐 post냐에 따라서 분기를 해서 같은 페이지에 요청이 오더라도 다른 일을 하도록 시킬 수도 있다. 물론 get이 올 때와 post가 올 때 완전히 다른 일을 시킬 때에만 이런식으로 짜야한다. 혼선이 있을 가능성이 없을 때만.
+
     - `from django.http import HttpResponse`를 통해 접근할 수 있으며 잘못된 접근이 일어났을 때 장고에서 미리 만들어둔 페이지를 보내줄 수 있다. status 요소에 몇 번 오류인지를 적어주면 알아서 만들어주는 함수다.
+
+    - 프론트엔드와 백엔드를 구분짓기 시작하면 views.py에서 보내는 게 이젠 html이 아니라 json이 되게 되는데, 이 때 파이썬의 경우 dict로 만들어 json을 보내게 된다. 이 방법이 크게 3가지 정도 있다. 
+
+      1. 이 때 활용하는 함수가 JsonResponse로 `from django.http.response import JsonResponse` 에서 가져올 수 있다. JsonResponse에 필요한 요소로 자료와 `safe=`요소인데 딕셔너리 형태로 보낼때는 `safe=True`지만 딕셔너리가 아닌 자료를 보낼 때는 `safe=False`로 넘겨줘야한다.
+
+      2. 혹은 `from django.core import serializers`에서 `serialiezers.serialize`를 가져와 쿼리셋을 json으로 변환해준다. 이 때 사용법은 첫번째 요소로 어떤 타입으로 바꿀건지를 스트링으로 넣어주고 쿼리셋을 넣어주면 된다. 이 후 httpRespose를 통해 변환된 json파일을 그대로 보내줘도 된다. 이 때 추가 옵션을 줄게 있는데 `content_type=`인데 이것을 'application/json'으로 해줘야 정상적으로 작동한다. 이는 헤더에 들어가 어떤 타입의 데이터가 들어있는지를 명시해주는 기능을 한다.
+         - serializtion(직렬화)는 데이터 구조나 객체 상태 다른 곳에서 재구성할 수 있는 포맷으로 변환하는 과정이다.
+         - 예를 들어 쿼리셋같은 복잡한 데이터를 json이나 xml등으로 바꿔주는것이다.
+      3. 마지막으로는 이를 해주는 3rd party 라이브러리를 쓰는 것인데 djagno rest framework이다. 줄여서 drf라고 한다.
+         - drf의 serializer는 modelform과 유사하게 작동, serializers.py를 만들어 `from rest_framework import serializers`에서 serializers.modelserializer을 상속받는 클래스를 만들고 이후는 modelform을 활용하여 form을 만들 때처럼 Meta클래스를 써서 만들어주면 된다. 문법이나 구조가 modelform과 똑같으므로 자세한 활용은 그 쪽을 참고
+         - 이후 views에서 이를 불러와 쿼리셋을 변환해주면 되는데, 이 때 `many=`라는 요소를 설정해줘야한다. 단일 객체라면 False를 여러 객체를 동시에 변환한다면 True를 써야한다. 
+         - 여기서의 serializer가 하는 것도 form과 비슷한데 데이터 검증과 보내줄 데이터를 특정 형식으로 만들어주는 일 2가지를 한다.
+         - `from rest_framework.response import Response` 에서 Response를 가져와 `return Response(serialized_data.data)`를 하면 된다.
+         - `from rest_framework.decoraters import api_view` 에서 데코레이터를 붙여줘야만 위 과정이 제대로 작동한다. 사용법은 @require_method와 같이 리스트로 만들어 넣어주면 되고 기본값은 GET만 허용이다.
 
 ### template
 
 - 데이터 표현을 위한 도구 및 로직
 
-- django가 빌트 인으로 가지고 있는 것이 있음 이를 DTL(django template language)라고 한다.
+- django가 빌트 인으로 가지고 있는 것이 있음, 이를 DTL(django template language)라고 한다.
 
 - DTL이 파이썬이랑 비슷하다, 다만 같은 것은 아니고 파이썬으로 실행되는 것도 아니다.
 
@@ -133,9 +151,9 @@ dynamic web application program
   - 프로젝트 이름을 만들 때 파이썬 내장함수들과 외부 라이브러리들, 및 장고에서 쓰는 용어들과 겹치는 이름을 쓰면 혼선이 생길 수 있으므로 쓰지 않아야 한다.
   - 하이픈이나 쉼표도 쓸 수 없으므로 언더바를 이용해 써야한다.
   - 이 때 프로젝트 네임 뒤에 .를 찍으면 현재위치에 만들라는 뜻이 되어 필요없는 폴더를 만들 일을 줄여준다.
-- `rm -rf intro/` : 장고 어드민을 통해 만들었던 프로젝트 파일을 그냥 지워서 없앤다. 이게 프로젝트를 없애는 방법이다.
+- `rm -rf projectname/` : 장고 어드민을 통해 만들었던 프로젝트 파일을 그냥 지워서 없앤다. 이게 프로젝트를 없애는 방법이다.
 - `python manage.py runserver` : python을 통해 manage.py라는 파일을 실행시키고 서버를 실행한다. 이 때 manage.py라는 파일이 있는 곳에서 실행해야만 올바르게 움직이게 할 수 있다.
-- `python manage.py startapp appname` : python으로 manage.py라는 파일을 실행시키고 appname이라는 이름을 가진 app을 시작한다. 이렇게 하면 app을 만든 세팅이 어느정도 끝나지만, 프로젝트에서 이를 인식하기 위해선 프로젝트의 settings에 appname이라고 추가해주면 된다. 다만 이 때 장고가 앱의 순서에 따라 어느정도까지만 읽을 때가 있으므로 local apps를 가장 먼저, 그 후 third party apps 그리고 django apps순으로 쓰는 편을 권장한다.
+- `python manage.py startapp appname` : python으로 manage.py라는 파일을 실행시키고 appname이라는 이름을 가진 app을 시작한다. 이렇게 하면 app을 만든 세팅이 어느정도 끝나지만, 프로젝트에서 이를 인식하기 위해선 프로젝트의 settings에 appname이라고 추가해줘야 한다. 다만 이 때 장고가 앱의 순서에 따라 어느정도까지만 읽을 때가 있으므로 local apps를 가장 먼저, 그 후 third party apps 그리고 django apps순으로 쓰는 편을 권장한다.
 ## django urls
 - dispatcher로서의 url(uniformed resource locator)
 
