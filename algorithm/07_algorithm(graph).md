@@ -99,7 +99,7 @@
     def union(x,y):
         link(find_set(x),find_set(y))
         
-    def union_with_rank(x,y):
+    def link(x,y):
         if rank[x] > rank[y]:
             p[y] = x
         else:

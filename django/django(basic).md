@@ -44,3 +44,7 @@
 - django-seed 
   - 더미데이터를 만들어주는 추가 라이브러리
   - `python manage.py seed appname --number=num` : num개의 데이터를 appname에 해당하는 db에 생성해준다.
+- json
+  - 딕셔너리를 json 파일로 변환해주는 기본 라이브러리
+  - `import json`으로 가져올 수 있으며, dump라는 메소드를 사용해 json형식으로 변환할 수 있다.
+  - json 형식이라는게 대단한게 아니라, json이라는 형식을 갖춘 str으로 바꿔주는 것이다.

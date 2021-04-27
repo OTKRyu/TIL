@@ -65,17 +65,19 @@ representational state transfer의 약자
         - 특정 자원의 표시를 요청, 데이터를 받기만 함
       - POST
         - 서버로 데이터를 전송, 서버에 변경사항을 만듦
-      - PUT
+      - PUT, PATCH
         - 요청한 주소의 자원을 수정
+        - 대체로 PUT은 db전체의 컬럼을 대상으로 변경하는 명령을 의미하고, PATCH는 부분의 컬럼을 변경하는 명령을 의미한다. 즉 PUT은 보내온 데이터외의 데이터는 없애버리는 명령이고, PATCH는 보내온 데이터중 해당하는 컬럼이 존재하는 곳만 변경하는 것이다.
+        - 그래서 PATCH를 구현하려면 데이터를 뒤져가면서 있는 것은 교체하고 아닌것은 그대로 두는 작업을 해야되는데 PUT방식으로 하는 것보다는 조금 성가시긴 하다.
       - DELETE
         - 지정한 자원을 삭제
-
+  
   - 표현(representations)
-
+  
     - json 
-
+  
       javascript object notation
-
+  
       - lightweight data-interchange format
       - 자바스크립트 객체 문법을 따름, 구조화된 데이터를 표현하기 위한 문자 기반 데이터 포맷
       - 일반적으로 웹 어플리케이션에서 클라이언트로 데이터를 전송할 때 사용
