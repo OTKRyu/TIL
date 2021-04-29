@@ -19,11 +19,14 @@ ecmascript6은 6번째 버전의 ecma convention guide를 따르는 것을 말�
 - 대소문자를 구분하며, 클래스명 외에는 모두 소문자로 시작
 - 예약어 사용 불가능
   - for, if, case 등등
-- camelCase : 변수 객체 함수에 사용
+- camelCase(lower camel case) : 변수, 객체, 함수에 사용
 - PascalCase(upeer camel case) : 클래스, 생성자에 사용
 - SNAKE_CASE: 상수에 사용
 
 ## conventions
 
 - 기본적으로 변수명은 camelCase로 작성한다.
+- function의 인자칸 빼고는 대체로 다 space 한번씩 하고 괄호를 시작한다.
+- if와 else, else if를 쓸 때는 if의 끝나는 중괄호 바로 옆에서 else나 else if가 시작되게 쓰도록 한다.
+- switch는 위와 달리 끝나는 중괄호 기준으로 줄을 바꿔서 써준다.
 
