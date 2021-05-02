@@ -274,15 +274,15 @@
       - `.filter()` : 콜백함수의 리턴값이 true인 요소만 모아서 배열로 반환
       - `.find()` : filter와 비슷한 기능이지만 콜백함수의 리턴값이 true인 첫번째 요소만 반환한다.
 
-      - `.reduce()` : 
+      - `.reduce()` :  유일하게 인자가 두개 필요한 매서드이다. cb, init이라고 부르는데 cb은 콜백함수를 init은 초기 값을 말한다. 추가적으로 콜백함수도 acc, ele 두개의 인자가 필요하다. 초회에는 init을 acc로 콜백함수에 넣고 그 후로는 인자마다 콜백함수를 돌리면서 반환된 값들을 acc자리에 넣어 계속 돌리다, 인자가 떨어지면 마지막 반환된 acc를 반환한다.
 
     - how to use
 
       - when .forEach, .map, .filter
         - arr.helpermethod(callbackfunction)
         - arr.helperMethod(function (arg) {return}) : arg is element of array
-
       - .reduce()
+        - arr.reduce(callbackfunction(acc, arg), initValue)
 
 ## 연산자
 

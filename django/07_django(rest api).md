@@ -31,6 +31,7 @@ representational state transfer의 약자
     - uniform resource identifier
     - 통합 자원 식별자
     - 인터넷의 자원을 나타내는 유일한 주소
+    - 원래는 마지막에 /를 안 보내는 것이 정상이나 django에서는 /를 붙이게 되어있다.
     - url의 상위 개념
       - uniform resource locator
       - 통합 자원 위치
@@ -54,9 +55,9 @@ representational state transfer의 약자
       - 가독성을 위해 밑줄 대신 하이픈사용
       - 대소문자 구분을 인식하기 때문에 소문자로 통일
       - 파일 확장자는 포함시키지 않음
-
+  
   - 행위(http method)
-
+  
     - 자원에 수행하길 원하는 행동
     - 의미론적으로 행위를 규정하는 것이라 실제로 그 행위 자체가 수행되는 걸 보장하진 않음
     - http verbs라고도 함

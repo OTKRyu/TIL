@@ -23,7 +23,7 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 
 ## 입력
 - `git add 'foldername'` : 대상을 staging
-- `git commit -m 'message'` : staging된 것들을 문구와 함께 commit
+- `git commit -m 'message'` : staging된 것들을 문구와 함께 commit, 일반적으로 commit은 소단위의 일이 끝났을 때마다 한다.
 - `git push origin 'branchname'` : origin이란 branchname에 commit을 업로드
 
 ## 출력
@@ -79,7 +79,6 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 - `git branch -d 'branchname'` : branch 삭제
 - `git branch -D 'branchname'` : branch 강제 삭제
 - `git branch 'branchname'` : branch 추가, 이 때 HEAD 기준으로 갈라져나온 branch임을 git이 인지를 함. 여기서 HEAD가 원류라고 볼 수 있다.
-- `git branch -c 'branchname'` : branch 생성과 이동(branch 생성과 동시에 switch로 생성한 branch로 이동)
 - `git merge 'branchname'` : branch상에 되었던 커밋을 내가 지금 있는 HEAD에 해당하는 branch와 병합함 
 	- branch가 하나였을 경우 master가 branch가 나간만큼 따라가면서 병합
 		- 이를 패스트포워딩이라고 함(fastforwarding)
@@ -88,6 +87,7 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 	  - vscode가 이를 좀 편하게 할 수 있도록 편의기능을 제공함
 	- 위의 병합을 사용했을 때 각 branch의 commit들을 모두 가지고 오고 시간순으로 배열해 보여줌.
 - `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용(switch와 checkout 둘 다 같은 명령어지만 git이 버전 업데이트를 하면서 이름이 좀 바뀐 것 뿐이다. 둘 다 사용 가능하다.)
+- `git switch -c 'branchname'` : 생성과 동시에 이동
 
 ## git 폴더 관련
 
@@ -96,5 +96,4 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 ## remote 관련
 
 웹상에 올려놓은 branch로 local branch보다 상위 권한을 지니며 결국 remote의 branch를 기준으로 일을 진행하게 된다.
-
 
