@@ -194,7 +194,7 @@ def profile(request, username):
             form = PasswordChangeForm(request.user, request.POST)
             if form.is_valid():
                 form.save()
-                update_session_auth_hash(request.form.user) # 로그인이 풀리는 걸 막기 위해 session을 업데이트한다.
+                update_session_auth_hash(request, form.user) # 로그인이 풀리는 걸 막기 위해 session을 업데이트한다.
                 return redirect('accounts:profile', request.user.username)
         else:
             form = PasswordChangeForm(request.user)

@@ -78,7 +78,7 @@ dynamic web application program
     - views의 내부의 첫번재 함수의 인자는 반드시 request가 들어가야 한다.
       - 기본적으로 들어가있는 render라는 함수를 써서 return을 작성하는데 이 때도 render의 첫 번째 인자는 request이며, 두 번째 인자로 템플릿 경로를 쓴다. 그리고 세번째로 context라는 정보가 담긴 딕셔너리를 넣게 된다.
       - 추가로 항상 html만을 보내주는것이 아닌 다른 url로 보내는 것을 해야될 때도 있는데 이 경우 render와 같은 패키지에 있는 redirect라는 함수가 필요하다. 이 함수에 `'/practice/'`와 같이 직접 보낼 경로를 쓰거나 또는 urlname을 쓰면 그 쪽으로 이동시켜준다. 인자가 필요한 경우 `argumentname = real_argument`식으로 ,로 연결해 보내면 된다.
-    - `get_objects_or_404 from django.shortcuts import get_objects_or_404(class, kawrgs=value)` : 인자를 받아서 조회를 해보고 결과가 없으면 404페이지를 보내는 함수다. 
+    - `from django.shortcuts import get_objects_or_404(class, kawrgs=value)` : 인자를 받아서 조회를 해보고 결과가 없으면 404페이지를 보내는 함수다. 
     - 오는 정보의 방법이 get이냐 post냐에 따라서 분기를 해서 같은 페이지에 요청이 오더라도 다른 일을 하도록 시킬 수도 있다. 물론 get이 올 때와 post가 올 때 완전히 다른 일을 시킬 때에만 이런식으로 짜야한다. 혼선이 있을 가능성이 없을 때만.
     - `from django.http import HttpResponse`를 통해 접근할 수 있으며 잘못된 접근이 일어났을 때 장고에서 미리 만들어둔 페이지를 보내줄 수 있다. status 요소에 몇 번 오류인지를 적어주면 알아서 만들어주는 함수다.
 
