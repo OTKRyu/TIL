@@ -16,7 +16,6 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 - `git log` : commit들을 보여줌
   - `--oneline` 이라는 추가 옵션을 붙여주면 한줄로 조금 더 깔끔하게 보여줌.
   - `--graph`이라는 추가 옵션을 주면 로그와 함게 브랜치가 어떻게 움직였는지 그래프를 보여줌
-- `git lg` : 요약된 commit들을 보여줌
 - `git reflog` : commit들과 HEAD의 이동들을 축약해 보여줌
 - `git remote -v` : 저장된 remote들을 보여줌
 - `git status` : git 폴더 안에 있는 파일들이 어떤 상태인지를 보여줌
