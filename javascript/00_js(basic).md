@@ -136,6 +136,7 @@
     - `localStorage.getItem('data')` : 사용자의 저장소에서 'data'라는 키값으로 저장된 데이터를 불러오는 일이다.  
     - `JSON.stringify(obj)` : object를 JSON형태를 갖춘 string으로 만들어준다.
     - `JSON.parse(str)` : JSON형태를 갖춘 str이 들어오면 obj로 만들어 준다.
+    - `new` : 인스턴스를 만들 때 쓰는 명령어라고 생각하면 된다.
 
 ## 객체 타입
 
