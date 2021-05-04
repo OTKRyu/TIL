@@ -26,7 +26,6 @@
 - table(엑셀의 한 시트에 해당한다.)
   - field/column/속성(이 중 각 자료들을 구분하기 위한 고유값을 primary key라고 부른다. 이 pk는 반드시 필요하다)
   - record/row/tuple(엑셀의 한 행에 해당한다.)
-  
 
 장고는 디폴트 데이터베이스로 sqlite를 사용하고 있는데 vscode에서 확장프로그램을 쓰면 db를 직접 볼 수도 있다.
 
@@ -58,6 +57,8 @@ create, read, update, delete의 가장 기본적인 데이터 처리를 묶어�
 이 때 내가 제공한 html폼태그에서 작성한 것이 맞는지를 확인하기 위해서, 폼태그 안에 `{% csrf_token %}`이란 것을 넣어서 준 후에 사용자가 제출을 할 때 내가 발행한 토큰이 맞는지를 기준으로 구분한다.
 
 이게 인증이 안 될 경우 redirect를 통해 다른 곳으로 옮겨줄 수도 있다.
+
+이 후 javascript에서 이를 활용하고 싶을 때는 document.querySeletor('[name=csrfmiddlewaretoken])로 잡는다.
 
 - create
   - 만들어놓은 클래스를 인스턴스에 할당을 하고 인스턴스에 실제 값들을 넣는다.(이 때 생성하고 값들을 넣어줄수도 있고, 생성하면서 바로 넣어줄 수도 있다.)
@@ -222,5 +223,4 @@ object relational mapping의 약자
 - `python manage.py createsuperuser` 를 통해 슈퍼유저를 만든다.
   - 이 때 required는 username과 password이며 나머지는 optional이다.
 - 이 때 password는 원문으로 저장하지 않고 암호화과정을 거치기 때문에 알아볼 수 없다.
-  
 

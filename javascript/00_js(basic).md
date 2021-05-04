@@ -112,6 +112,8 @@
 - 함수 
   - 자바스크립트의 함수는 에러를 잘 내지 않는다. 인자가 적어도 인자가 많아도 일단 실행은 되는 편이다. 이 때 많을 경우에는 뒤에 들어온 인자를 무시한다.
   
+  - 얼마나 들어올지 알 수 없는 인자에는 `...argnames` 이런식으로 적어준다. 그리고 이 `...`은 파이썬의 `*`와 같이 리스트 요소 하나하나를 분해한 것을 의미하기도 한다.
+  
   - `function funcname(arg) { return value}` : 기본적으로 함수를 생성하는 법, 선언식
   
   - `const funcname = function(arg) { return value}` : 함수를 생성해 함수이름에 할당한 것, 표현식 
@@ -120,7 +122,7 @@
   
   - 다만 이렇게 할경우 함수를 담을 그릇을 const라는 제한을 가진 그릇으로 만드는 것이라서 선언식으로 짠 것과는 조금 차이가 있다. var를 썼을 경우 호이스팅이 되기 때문에 아래에서 정의해놔도 위에서 쓸 수 있지만, const로 쓸 경우 이런 것은 불가능하다. 하지만 원래도 함수는 위에서 먼저 적어두는 것이 관습이기 때문에 그냥 관습을 지키면 신경쓸 필요 없는 문제다.
   
-  - 이 표현식조차 줄일 수 있는데 그게 arrow function이라고 불리는 것으로 코드는 아래와 같다. 다만 이렇게 쓸 경우 위의 표현들과는 좀 차이가 생긴다. 이 차이가 생기는 경우가 내부에 this라는 예약어가 있는 경우다.
+  - 이 표현식조차 줄일 수 있는데 그게 arrow function이라고 불리는 것으로 코드는 아래와 같다. 다만 이렇게 쓸 경우 위의 표현들과는 좀 차이가 생긴다. 이 차이가 생기는 경우가 내부에 this라는 예약어가 있는 경우다. 이 arrow function은 기본적으로 this를 arrow function을 부른 곳의 this에 bind시킨다. 따라서 this가 window를 가리키지 않게 되는 효과가 있다.
   
     ```javascript
     const mul = (n1, n2) => n1 * n2
@@ -137,6 +139,43 @@
     - `JSON.stringify(obj)` : object를 JSON형태를 갖춘 string으로 만들어준다.
     - `JSON.parse(str)` : JSON형태를 갖춘 str이 들어오면 obj로 만들어 준다.
     - `new` : 인스턴스를 만들 때 쓰는 명령어라고 생각하면 된다.
+  
+- 클래스 개념
+
+  - 자바스크립트에는 클래스 개념을 object로 대체하고 상속관련된 기능을 `__proto__`로 구현해놓았다.
+  - 그리고 인스턴스를 만드는 생성자 함수는 있는데 이를 구현할 때 python의 self와 같은 역할을 하는 것이 this고 이런식으로 인스턴스를 만들 때 필요한 수식어가 new이다.
+  - 다만 this는 아래의 경우를 제외하고 모두 최상위 객체(window)를 가르킨다. 
+    1. constructor 함수 내부에서
+    2. 메서드에서
+       1. object에서 key - function 으로 정의된 것
+       2. class 정의 내부의 메서드 정의
+  - 게다가 정의가 아닌 실행될 때에서도 실행되는 위치에 따라 위와 같은 방식으로 작동한다.
+  - 그리고 이런 오브젝트에 외부에서 생성하는 방법이 prototype메서드이다.
+  - es6에 와서 클래스 기능을 많이 수정했다. 아래와 같이 쓰면 된다.
+  
+  ```javascript
+  class Car {
+      constructor(options) {
+          this.title = options.title
+      }
+      drive() {
+          return `${this.title} 달린다`
+      }
+  }
+  class Mercedes extends Car {
+      constructor(options) {
+          super(options)
+          this.color = options.color
+      }
+      honk() {
+  	  return '빵빵'
+      }
+  }
+  const options = {title: '세단', color: 'blue'}
+  const car = new Car(options)
+  ```
+  
+  
 
 ## 객체 타입
 
@@ -264,21 +303,21 @@
       - `.includes(ele)` : 원본에 ele이 있는 지에 대해서 boolean값 반환
       - `.indexOf(ele)` :  원본에 ele이 있는지 찾아서 있으면 그 index를 없으면 -1 반환
       - `.join('str')` : 원본을 문자열로 취급하면서, str를 사이에 끼운 하나의 문자열로 만들어 반환
-      - `.forEach(func)` : 원본의 원소 하나하나를 func에 넣었을 때의 결과로 바꿔줌
-
+      - `.concat('array')` : 두 개의 어레이를 합쳐준다. 
+    
     - arreyhelpermethods
-
+    
     - 종류
-
-      - `.forEach()` : 리턴 되는 값이 없고, 콜백 함수에 return도 있을 필요가 없다. for of 문과 용도가 비슷하다. array를 돌면서 함수에 해당하는 일을 실행한다.
+    
+      - `.forEach()` : 리턴 되는 값이 없고, 콜백 함수에 return도 있을 필요가 없다. for of 문과 용도가 비슷하다. array를 돌면서 함수에 해당하는 일을 실행한다. iterable하기만 하다면 뭐든지 지원한다. 다만 다른 함수들은 array만 지원한다.
       - `.map()` : 콜백함수로 만든 array를 반환한다.
       - `.filter()` : 콜백함수의 리턴값이 true인 요소만 모아서 배열로 반환
       - `.find()` : filter와 비슷한 기능이지만 콜백함수의 리턴값이 true인 첫번째 요소만 반환한다.
-
+    
       - `.reduce()` :  유일하게 인자가 두개 필요한 매서드이다. cb, init이라고 부르는데 cb은 콜백함수를 init은 초기 값을 말한다. 추가적으로 콜백함수도 acc, ele 두개의 인자가 필요하다. 초회에는 init을 acc로 콜백함수에 넣고 그 후로는 인자마다 콜백함수를 돌리면서 반환된 값들을 acc자리에 넣어 계속 돌리다, 인자가 떨어지면 마지막 반환된 acc를 반환한다.
-
+    
     - how to use
-
+    
       - when .forEach, .map, .filter
         - arr.helpermethod(callbackfunction)
         - arr.helperMethod(function (arg) {return}) : arg is element of array

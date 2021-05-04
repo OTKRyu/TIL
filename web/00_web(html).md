@@ -62,6 +62,9 @@ hyper text markup language의 약자
 
 ### html의 글로벌 태그
 
+- 모든 태그에 있는 하위 속성
+  - `data-*` : html표준에 없는 속성을 사용자가 직접 줄 수 있으며 접두사로 data-를 꼭 붙여줘야한다. 대체로 javascript에서 쓰기 위해 사용한다. 그리고 javascript에서 쓸 때는 태그.dataset에 따로 저장된다. 결국 javascript에서 쓰기 위한 의미가 더 크므로 html문법보다는 javascript문법에 맞게 작성하는 편이다.
+
 - 주석
   - `<! --내용 -->`이런 식으로 사용하게 된다
   - ctrl + / 는 vscode에서 주석으로 인식해 자동으로 변환해 주므로 이쪽을 많이 쓴다.
