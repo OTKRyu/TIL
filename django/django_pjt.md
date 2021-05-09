@@ -95,3 +95,97 @@ assertNotEqual은 말그대로 두 개의 요소를 받아 두 개가 다를 때
 TDD에 관한 설명
 
 test-driven development의 약자로 규모가 커질수록 실제로 검증해가면서 디버그를 하는게 쉽지 않으므로, 전체적으로 내 프로젝트가 잘 만들어졌는지 검증할 수 있는 test를 먼저 만들고, 실제 개발을 하면서 이 test를 충족시킬 수 있는지를 검증해나가는 방식을 말한다.
+
+## pjt09
+
+- query
+
+  - db optimizaion에 관한 내용(1+n queryset problem)
+  - 이를 좀 더 편하게 해주는 것이 django debug toolbar다
+  - 페이지마다 쿼리문을 얼마나 보내는지 시간은 얼마나 걸렸는지 등을 시각화시켜준다.
+  - 사용법은 공식문서 참조
+  - sql join은 연결관계가 있는 테이블을 연결키 기준으로 합쳐서 테이블을 만드는 기능이다.
+  - django orm에서 쓸 때는 select_related라는 명령어로 사용한다. 이 때 정참조일 때만 사용할 수 있다. sql에서 inner join 사용
+  - m대m 정참조, fk 역참조일 때는 prefetch_related를 사용하여 sql join을 활용한다. 파이썬 내부의 join활용. `prefetch_related(Prefetch('comment_set',queryset=Comment.objects.select_related('user'))` 과 같이 사용할 수 있다.
+
+- infinity scroll
+
+  - 일단 한번의 로딩에 몇 개의 자료를 불러올 지 나눠놔야하므로 pegination을 해줘야한다.
+
+  - ` from django.core.peginator import Paginator`
+
+  - `paginator = Paginator(queryset, query num for each page)`
+
+  - `movies = paginator.get_page(page_numbe)`
+
+  - 그리고 ajax를 활용할 것이기 때문에 html을 보내는게 아니라 json데이터를 보내야한다.
+
+  - 고로 이걸 직렬화해서 json으로 보내준다.
+
+  - 그리고 이러면  html과 json 둘 중 하나만 보낼 수 있기 때문에 이 둘을 분기하기 위해서 `request.is_ajax()`를 활용해준다.
+
+  - javascript에서 스크롤이 화면의 맨 아래까지 내려가면 요청을 보내게 만든다.
+
+  - ```javascript
+    document.addEventListener('scroll', (event) =>{
+    // 아래의 documentElement는 document의 전반적인 정보를 가지고 있는 곳이다.
+    // 이 안의 scrollHeight는 전체 html문서 중 어느정도에 위치했는지를 보여준다.
+    // 내가 지금 보고 있는 화면에서의 높이가 clientHeight이다.
+        const {scrollTop, clientHeight, scrollHeight} = document.documentElement
+        let pageNum = 2
+        if (scrollHeight-scrollTop === clientHeight){
+            requestData = {
+                method: 'get',
+                url : `http://localhost:8000/movies/?page=${pageNum}`,
+    			headers : {'X-Requested-With':'XMLHttpRequest'}
+            }
+            axios.get(requestData)
+            	.then((res) =>{
+                res.data.forEach((movie) => {
+                    const movieDiv = document.createElement('div')
+                    const movieList = document.querySelector('#movie_list')
+                    const movieData = `<h1>${movie.fields.title}</h1><p>${movie.fields.overview}</p>`
+                    movieDiv.innerHtml = movieData
+                    movieList.append(movieDiv)
+                    pageNum++
+                })
+            })
+        }
+    })
+    ```
+    
+  - vue.js version
+  
+  - ```javascript
+    const app = new Vue({
+        el:'#movie-list',
+        data: {
+            movies: [],
+            url: 'url',
+            pageNum:1,
+        },
+        methods: {
+            getMovies() {
+                axios.get(this.url)
+                .then((res) => {
+                    this.movies.push(...res.data)
+    				this.pageNum++
+                })
+            },
+            checkBottom() {
+                const {scrollTop, clientHeight, scrollHeight} = document.documentElement
+        	if (scrollHeight-scrollTop === clientHeight){
+                this.getMovies()
+            }
+        },
+        // vue instance의 생애주기 중 탄생에 해당했을 때 실행할 일
+        create: function () {
+            this.getMovies()
+            window.addEventListener('scroll', this.checkBottom)
+    	}
+    })
+    ```
+  
+  - {{}}로 보간법을 하는게 장고와 vue가 같기 때문에 html과 json을 모두 보내느 방식으로 짜면 장고가 이를 실행해버릴 우려가 있다. 주의해야한다.
+  
+  - vue instance의 delimeter라는 항목을 조작해 보간법에 해당하는 것을 변경할 수도 있으나 추천하진 않는다.

@@ -307,22 +307,22 @@
     
     - arreyhelpermethods
     
-    - 종류
+      - 종류
     
-      - `.forEach()` : 리턴 되는 값이 없고, 콜백 함수에 return도 있을 필요가 없다. for of 문과 용도가 비슷하다. array를 돌면서 함수에 해당하는 일을 실행한다. iterable하기만 하다면 뭐든지 지원한다. 다만 다른 함수들은 array만 지원한다.
-      - `.map()` : 콜백함수로 만든 array를 반환한다.
-      - `.filter()` : 콜백함수의 리턴값이 true인 요소만 모아서 배열로 반환
-      - `.find()` : filter와 비슷한 기능이지만 콜백함수의 리턴값이 true인 첫번째 요소만 반환한다.
+        - `.forEach()` : 리턴 되는 값이 없고, 콜백 함수에 return도 있을 필요가 없다. for of 문과 용도가 비슷하다. array를 돌면서 함수에 해당하는 일을 실행한다. iterable하기만 하다면 뭐든지 지원한다. 다만 다른 함수들은 array만 지원한다.
+        - `.map()` : 콜백함수로 만든 array를 반환한다.
+        - `.filter()` : 콜백함수의 리턴값이 true인 요소만 모아서 배열로 반환
+        - `.find()` : filter와 비슷한 기능이지만 콜백함수의 리턴값이 true인 첫번째 요소만 반환한다.
     
-      - `.reduce()` :  유일하게 인자가 두개 필요한 매서드이다. cb, init이라고 부르는데 cb은 콜백함수를 init은 초기 값을 말한다. 추가적으로 콜백함수도 acc, ele 두개의 인자가 필요하다. 초회에는 init을 acc로 콜백함수에 넣고 그 후로는 인자마다 콜백함수를 돌리면서 반환된 값들을 acc자리에 넣어 계속 돌리다, 인자가 떨어지면 마지막 반환된 acc를 반환한다.
+        - `.reduce()` :  유일하게 인자가 두개 필요한 매서드이다. cb, init이라고 부르는데 cb은 콜백함수를 init은 초기 값을 말한다. 추가적으로 콜백함수도 acc, ele 두개의 인자가 필요하다. 초회에는 init을 acc로 콜백함수에 넣고 그 후로는 인자마다 콜백함수를 돌리면서 반환된 값들을 acc자리에 넣어 계속 돌리다, 인자가 떨어지면 마지막 반환된 acc를 반환한다.
     
-    - how to use
+      - how to use
     
-      - when .forEach, .map, .filter
-        - arr.helpermethod(callbackfunction)
-        - arr.helperMethod(function (arg) {return}) : arg is element of array
-      - .reduce()
-        - arr.reduce(callbackfunction(acc, arg), initValue)
+        - when .forEach, .map, .filter
+          - arr.helpermethod(callbackfunction)
+          - arr.helperMethod(function (arg) {return}) : arg is element of array
+        - .reduce()
+          - arr.reduce(callbackfunction(acc, arg), initValue)
 
 ## 연산자
 
