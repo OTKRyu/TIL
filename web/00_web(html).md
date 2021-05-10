@@ -1,5 +1,11 @@
 # web
 
+vscode 확장프로그램 
+
+-  auto rename tag
+- highlight matching tag
+- open in browser
+
 ## 표준
 
 - W3C

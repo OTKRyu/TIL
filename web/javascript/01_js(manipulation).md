@@ -73,9 +73,9 @@
   - `document.getElementsByClassName()`
   - 위의 셋과 같은 선택지가 있지만 queryselector가 더 유연하게 사용가능하므로 위의 셋은 잘 쓰지 않는다.
 - dom 추가 삭제 메서드
-  - `document.createElement()`
+  - `document.createElement('li')`
     - 주어진 태그명을 이용해 html요소를 만들어 반환
-  - `document.write()`
+  - `document.write('<h1>hello></h1>')`
     - html 문법에 맞춘 str이 들어오면 그걸 그대로 html에 적어준다.
   - `parentNode.append()`
     - 특정 부모 노드의 자식 노드 리스트 중 마지막 자식 다음에 node객체나 domstring을 삽입(반환 값 없음)
@@ -145,6 +145,7 @@
       - submit : 데이터를 전송하려고 할 때 발생
       - scroll : 스크롤로 움직이려고 할 때 발생 
       - keydown : 어떤 버튼이든 간에 누르면 발생
+      - keyup : 어떤 버튼을 눌렀다 뗐을 때에 발생, .enter와 같이 특정키를지정가능
       - change : 포커스에서 벗어나면 발생
 
 ### bom

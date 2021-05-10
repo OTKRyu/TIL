@@ -1,5 +1,10 @@
 # django
 
+vscode 확장 프로그램
+
+- django
+- sqlite
+
 ## how to start
 
 1. 프로젝트를 생성하려는 디렉토리에서 프롬프트
