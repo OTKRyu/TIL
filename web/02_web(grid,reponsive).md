@@ -58,7 +58,7 @@
 
 - 속성(self속성뺴고는 전부 flex-container에서 조작)
 
-  - `flex-flow` : flex-direction과 flex-wrap의 shorthand
+  - `flex-flow` : flex-direction과 flex-wrap의 shortened
   - 배치 방향 설정(`flex-direction`) : 기본값은 좌우, 축을 변경해 세로로도 가능(메인축을 바꾸는 것)
 
   방향도 바꿀 수 있다.(row,row-reverse,column,column-reverse)

@@ -46,6 +46,7 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 	- `--hard commithash`  옵션을 줄 경우 파일까지 완전히 commithash때의 상태로 돌려버린다.
 	- `--soft commithash` 옵션을 줄 경우 commithash때의 상태로 commit들은 되돌아가나, 실제 파일에 적용하지는 않는다. 변경사항은 staging에 저장은 해놓는다.
 	- `--mixed commithash` 옵션을 줄 경우 commithash때로 돌아가나 soft와 마찬가지로 실제 파일에는 적용하지 않고, 변경사항은 workign directory에만 남아있게 된다.
+	- `HEAD`: 옵션을 먼저 주면 현재 헤드 기준으로 한칸 뒤를 가리키게 된다.
 	
 - `git revert commithash` : 할 경우 reset처럼 commithash를 기준으로 돌아가게 만들어줄 수 있으나, commit 기록들은 남기고 commithash 당시의 파일과 현재의 파일을 merge시키는 것처럼 움직인다. conflict를 해결해주고 나서 다시 커밋을 해주면 reverting이 완료된다. 사실상 commithash당시의 파일 상황대로 working directory를 만든 뒤 새 커밋을 찍어주는 것과 같다. 다만 프로젝트가 커지면 commithash 당시의 파일 상황이 어떤지를 아는것이 쉬운 일이 아니므로 이런 기능이 필요하다.
 

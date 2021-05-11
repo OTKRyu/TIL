@@ -1,6 +1,6 @@
 # vue
 
-확장 프로그램 vetur 사용
+vscode 확장 프로그램 vetur 사용
 
 ## intro
 
@@ -51,6 +51,17 @@ spa 등장 배경
   - data가 변하면 dom도 같이 변화한다.
     1. data 로직 작성
     2. dom 작성
+- vue lifecycle hook
+  - vue instance가 생성부터 소멸까지의 과정중에 거치는 단계들을 말한다.
+  - 이런 단계마다 자동적으로 실행해야할 일을 지정해줄 수 있다.
+  - beforecreate
+  - created
+  - beforeMount
+  - mounted
+  - beforeUpdate
+  - updated
+  - beforeDestroy
+  - destroy
 
 ## 사용법
 
@@ -79,7 +90,7 @@ spa 등장 배경
      - `v-html` : 태그 안에 html 요소가 들어간 것(innerHTML), 여전히 xss 공격에 취약하므로 임의의 사용자에게 받은 내용은 절 대 사용 금지, 에러나서 vue의 작동이 멈춰버린다.
      - `v-show` : 단순 엘레멘트에 display속성을 토글, false로 주면 display='none'을 줌
      - `v-if, v-else, v-else-if` : 조건부 렌더링을 걸 수 있는 속성이다. 조건에 해당되는 얘들만 넣어주고 아니면 안 넣는다. show와 다르게 렌더링 과정에서 html상에 없게된다.
-     - `v-for` : 원본 데이터를 기반으로 v-for를 속성으로 지닌 태그를 여러번 렌더링. ""안에 js가 아닌 문법이 들어갈 수 있다. 파이썬처럼 쓸 수 있다. 
+     - `v-for` : 원본 데이터를 기반으로 v-for를 속성으로 지닌 태그를 여러번 렌더링. ""안에 js가 아닌 문법이 들어갈 수 있다. 파이썬처럼 쓸 수 있다.  `:key`를 추가적으로 넣어줘야되는데 이는 순서를 어떤 식으로 보여줄지를 정해주는 곳이다. 데이터 항목의 순서가 변경된 경우 이를 일치시켜주기 위해서 쓰는 것이다. 이를 제공하지 않으면 재정렬시 `v-for`가 어그러질 가능성이 높다.
      - `v-on` : `v-on:click="changMessage"`처럼 액션을 붙여주고 그 때 실행될 함수명을 써주면 된다. 이를 줄여서 v-on대신 @를 써도 작동한다.
      - `v-bind` : 속성값과 연결, 즉 data의 값을 속성의 값과 연결시켜주는 역할이다.`v-bind:src="imgUrl"`처럼 원 속성 앞에 v-bind를 붙여주면 된다. `:`만 써주면 shortcut이다.
      - `v-model` : data를 연결해 직접 동기화할 때 쓴다. 인풋태그에  `v-model="dataname"`이라고 써주면 dataname을 인풋값을 dataname과 동기화시켜서 dataname을 쓰는 모든 다른 태그에 값을 변경시킨다. 인풋태그와만 엮어서 쓰며, 중간과정에 개입할 수가 없으므로 동기화에만 쓴다.

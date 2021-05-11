@@ -30,3 +30,8 @@ ecmascript6은 6번째 버전의 ecma convention guide를 따르는 것을 말�
 - if와 else, else if를 쓸 때는 if의 끝나는 중괄호 바로 옆에서 else나 else if가 시작되게 쓰도록 한다.
 - switch는 위와 달리 끝나는 중괄호 기준으로 줄을 바꿔서 써준다.
 
+## tips
+
+- 불리언값으로 반환하고 싶을 때 `!!`를 쓰면 짧게 쓸 수 있다.
+- 글자가 너무 많을 경우 array의 slice 매서드를 활용해 줄여서 표현할 수 있다.
+
