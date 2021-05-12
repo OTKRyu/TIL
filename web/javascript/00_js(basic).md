@@ -287,11 +287,9 @@
 	2. array
 
     - 음수 인덱싱 불가능
-
     - 슬라이싱 불가능
-
     - 사실 array아님 동적 연결 리스트임
-
+    - spread syntax라고 `...`으로 쓰면 array의 각 요소들을 분해해서 하나하나 보여준 꼴이 된다.
     - 속성 및 매서드
 
       - `.length` : 길이
@@ -304,7 +302,7 @@
       - `.indexOf(ele)` :  원본에 ele이 있는지 찾아서 있으면 그 index를 없으면 -1 반환
       - `.join('str')` : 원본을 문자열로 취급하면서, str를 사이에 끼운 하나의 문자열로 만들어 반환
       - `.concat('array')` : 두 개의 어레이를 합쳐준다. 
-    
+      - `.splice(idx, num, replacedata)` : 원본의 idx번째 원소부터 num개의 원소를 replacedata로 바꾸어준다. replacedata를 써주지 않을 경우 삭제하게 된다.  
     - arreyhelpermethods
     
       - 종류
