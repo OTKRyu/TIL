@@ -66,6 +66,7 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
    - actions에서 commit()으로 호출
    - 비동기적으로 동작하면 state가 변화하는 시점이 달라질 수 있기 때문에 동기적인 코드만 작성
    - mutations에 정의하는 메서드의 첫 번째 인자로 state가 넘어옴
+   - 무조건 동기적인 메서드만을 사용해야한다. vuex가 비동기적인 메서드가 끝나는 시점을 추적할 수 없기 때문에 적절히 반영할 수 없기 때문이다.
 
 4. getters
 
@@ -83,10 +84,10 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
 - component helper method
   - vuex를 쓰면 중앙과 지역이 따로 움직이기 때문에 이를 매번 연결하거나 하는 컴포넌트 간의 해야할 일이 생기게 되는데, 이를 도와주는 메서드들이다.
   - 기본적으로 내장이 되어 있지 않으므로 가져와야 한다. 위치는 'vuex'에 있다.
-  - 공통적으로 사용은 매핑할 객체 안에 객체안에 `...componenthelpermethod(objectnames)` 라고 써주면 `objectnames:object`로 매핑이 된다.  
-  - `...mapState()` : computed와 state를 매핑
+  - 공통적으로 사용은 매핑할 객체 안에 객체안에 `...componenthelpermethod([objectname,])` 라고 써주면 `objectnames:object`로 매핑이 된다.  
+  - `...mapState()` : computed와 state를 매핑, 다만 이 함수는 computed에서 쓰는 편이다. data는 대체로 로컬 데이터를 의미할 떄가 많기 때문
   - `...mapGetters()` : computed와 getters매핑
-  - `...mapActions()` : action과 methods를 매핑, actions의 경우 payload가 추가로 들어가므로 호출할 때 인자를 넘겨주면 정상적으로 작동한다.
+  - `...mapActions()` : action과 methods를 매핑, actions의 경우 payload가 추가로 들어가므로 호출할 때 `@event=actionname()`이런 식으로 인자를 넘겨주면 정상적으로 작동한다. 원래 들어가야할 event객체를 넘겨주고 싶다면 넘겨줄 때 `$event`를 넣어주면 함수 내부에서 event를 잡을 수 있다. 
 
 
 ### 실제 사용
@@ -110,8 +111,7 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
 플러그인 을 쓰려면 index.js에서 `plugins: []`라는 속성을 새로주고, 넣으려는 플러그인을 저 안에 넣어서 실행해줘야한다.
 
 - vuex-persistedstate
+  - 설치는 `npm i vuex-persistedstate`
   - 지역저장소를 사용할 경우 이를 편리하게 해주는 플러그인
   - 사용하게 될 시 state의 내용들이 변경될 때마다 지역 저장소에 저장되어 브라우저를 새로고침해도 정보가 날아가지 않는다.
-
-
 
