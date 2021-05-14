@@ -68,3 +68,4 @@ Command-line interface의 약자로 말그대로 명령어 한줄씩 써서 작�
   - global regular expression print
 - `|` : 리눅스에서 앞의 파일을 뒤의 명령의 삽입 장소에 넣어준다. ex)`pip list | grep 'django'`
 - `curl` : git bash에서 제공하는 명령어로 뒤에 method와 url을 작성해서 실행하면 요청을 실제로 보낸다.
+- `pwe` : 현재 어디서 작업하고 있는지 위치를 반환
