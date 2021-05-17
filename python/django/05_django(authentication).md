@@ -131,6 +131,7 @@ def logout(request):
   - 이렇게 해서 유효성 검사를 거치고 나면 save()를 해주게 되는데 이 때 UserCreationForm도 save시에 user객체를 반환하게 된다.
   - 나머지는 login과 동일하다.
   - 다만 단순히 등록만 하고 끝내는 게 아니라 로그인상태로 만들어주고 싶다면 로그인단에서 `auth_login(request, user)`를 추가해주면 된다.
+  - 폼을 쓰지 않고 이를 구현하고자 하는 경우, 다른 개체를 저장하듯이하면 되지만, password만큼은 `user.set_password`라는 메서드를 사용해 해싱된 값을 db에 저장하게 된다.
 - read
 
 ```python

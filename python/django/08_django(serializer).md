@@ -19,11 +19,9 @@
 #### serializer.py
 
    - drf의 serializer는 modelform과 유사하게 작동, serializers.py를 만들어 `from rest_framework import serializers`에서 serializers.modelserializer을 상속받는 클래스를 만들고 이후는 modelform을 활용하여 form을 만들 때처럼 Meta클래스를 써서 만들어주면 된다. 문법이나 구조가 modelform과 똑같으므로 자세한 활용은 그 쪽을 참고
-
-   - 이 때 serializer의 항목을 적을 때 `read_only=True`옵션을 주면 한번 작성하고 나면 외부 접근으로는 변경할 수 없도록 고정시켜 높을 수가 있다.
-
+   - 이 때 serializer의 항목을 적을 때 `read_only=True`옵션을 주면 한번 작성하고 나면 외부 접근으로는 변경할 수 없도록 고정시켜 놓을 수가 있다.
+   - 반대로 `write_only=True`옵션을 주면 쓰기는 써지지만 보낼 때는 보내지지 않는다.
    - 여기서의 serializer가 하는 것도 form과 비슷한데 데이터 검증과 보내줄 데이터를 특정 형식으로 만들어주는 일 2가지를 한다.
-
    - 여기에 연결관계가 추가되면서 복잡해 지는데, model에서 하던것처럼 serializer끼리도 참조관계를 가지기 시작해야한다.
 
 ```python
@@ -39,10 +37,7 @@ class ArticleSerailizer(serializers.ModelSerializer):
 ```
 
    - `serializer.save(article=article, user=request.user)`이렇게 되면 연결된 객체를 넣어주지 않으면 유효성검사를 통과할 수 없기 때문에 제외를 해주든 해야한다. 다만 제외를 하는 경우에는 데이터에서도 연결관계를 표시를 안 하게 되기 때문에 포함은 시켜주되, read_only_field를 따로 넣어서 제어를 다르게 해주는게 바람직하다.
-
    - 그리고 관계가 있는 객체를 실제로 json데이터에 동봉해서 보내주고 싶다면, serializer에 역참조용 매니저 이름으로 연결을 시켜줘야한다.
-
-     
 
 #### views.py
 
