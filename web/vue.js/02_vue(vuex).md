@@ -49,7 +49,6 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
    - state가 변화하면 해당 state를 공유하는 컴포넌트의 dom은 알아서 렌더링
    - vuex store에서 데이터를 가져와 사용
    - dispatch()를 사용하여 actions 내부의 메서드를 호출 
-
 2. actions
 
    - 컴포넌트에서 dispatch() 메서드에 의해 호출
@@ -60,14 +59,12 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
    - mutations에 정의된 메서드를 commit 메서드로 호출
    - state는 오로지 mutations 메서드를 통해서만 조작
      - 올바른 역할 분담을 위해
-
 3. mutations
 
    - actions에서 commit()으로 호출
    - 비동기적으로 동작하면 state가 변화하는 시점이 달라질 수 있기 때문에 동기적인 코드만 작성
    - mutations에 정의하는 메서드의 첫 번째 인자로 state가 넘어옴
    - 무조건 동기적인 메서드만을 사용해야한다. vuex가 비동기적인 메서드가 끝나는 시점을 추적할 수 없기 때문에 적절히 반영할 수 없기 때문이다.
-
 4. getters
 
    - state를 변경하진 않고 활용하여 계산을 수행(computed)
@@ -76,6 +73,13 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
    - 처음부터 생성되어 있지는 않다.
    - state를 쓰기 때문에 첫번째 인자로 state가 들어온다.
    - 가져올 때는 `this.$store.getters.gettername`으로 가져와 사용하게 된다.
+5. modules
+   - 사이트의 기능이 많아지면 중앙관리소 한 곳에서 모든 것을 관리하는 것이 유지보수면에서 좋지 않게 된다.
+   - 고로 중앙관리소를 기능별로 쪼개서 관리하고 이를 중앙으로 가져와 사용하게 된다.
+   - 이렇게 기능별로 쪼갠 것을 중앙에 끌어다 쓸 수 있도록 등록하는 곳이 modules이다.
+   - modules에 등록하면 state를 제외한 모든 요소들이 중앙으로 다시 렌더링되므로 원래 쓰던데로 함수명을 vuex.map으로 가져올 수 있다. 고로 함수명같은 경우에는 중복되지 않도록 주의할 필요가 있다.
+   - state는 name spacing이 유지되므로 .으로 접근하여 가져오면 된다.
+   - 실행될 때는 같은 module내에서는 독립성을 유지하기 때문에 그냥 중앙에서 쓰듯이 써도 잘 작동한다.
 
 
 
@@ -105,6 +109,19 @@ vuex는 flux 디자인 패턴을 적용한 라이브러리로 flux 디자인 패
   - 다만 mutations을 직접 호출하는 방법은 권장하지 않으며, mutations에 연결된 actions을 만드는 방법을 권장한다.
   - `this.$store.dispatch('actionname',payload)`로 액션을 호출한다.
   - 그 후 action에서  `context.commit('mutationname',payload)`로 mutation을 호출해 중앙 데이터를 변경한다.
+
+## vue-cookies
+
+- vue에서 cookies에 정보를 저장하기 쉽게 만들기 위해 준비된 라이브러리다.
+- 다른 라이브러리처럼 vue에 사용한다고 등록을 해줘야하는데 이를 자동으로 해주지 않기 때문에, 수동으로 등록을 해줘야한다.
+- 딱히 따로 등록할 곳을 만들어주진 않으므로 main.js에 가져와서 사용한다고 등록해주면 된다.
+- 사용할 때도 다른 라이브러리와 비슷하게 필요한 곳에 가서 등록하고 사용하면 된다.
+- 원래라면 쿠키를 직접 파싱해서 사용해야되는데 이 라이브러리가 이를 알아서 처리해준다.
+- 명령어
+  - cookies.set('key', value,'duration') : 쿠키에 key, value를 저장하게 된다. duration의 기간만큼 남아있게 된다.
+  - cookies.get('key') : 쿠키에서 key값이 있는지 찾아서 그 값을 가져온다.
+  - cookies.remove('key') : 쿠키에서 key값으로 저장된 값을 없앤다.
+
 
 ### 추가 플러그인
 

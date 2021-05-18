@@ -94,6 +94,6 @@ spa 등장 배경
      - `v-on` : `v-on:click="changMessage"`처럼 액션을 붙여주고 그 때 실행될 함수명을 써주면 된다. 이를 줄여서 v-on대신 @를 써도 작동한다.
      - `v-bind` : 속성값과 연결, 즉 data의 값을 속성의 값과 연결시켜주는 역할이다.`v-bind:src="imgUrl"`처럼 원 속성 앞에 v-bind를 붙여주면 된다. `:`만 써주면 shortcut이다. 추가적으로 객체를 바인드 시켜줄 수도 있는데 그렇게 쓸 경우 value의 값이 true일 경우에만 key를 적용하는 식으로 작동하게 만들 수 있다. 주로 class와 style에 많이 쓰인다.
      - `v-model` : data를 연결해 직접 동기화할 때 쓴다. 인풋태그에  `v-model="dataname"`이라고 써주면 dataname을 인풋값을 dataname과 동기화시켜서 dataname을 쓰는 모든 다른 태그에 값을 변경시킨다. 인풋태그와만 엮어서 쓰며, 중간과정에 개입할 수가 없으므로 동기화에만 쓴다. 추가적으로 `.trim`을 뒤에 붙여주면 양 옆의 공백을 없앤 뒤의 값과 연동되게 된다.
-     - `native` : html본래의 이벤트를 사용할 때 붙여준다.
+     - `native` : html본래의 이벤트를 사용할 때 붙여준다. 왜 필요하냐면 basic vue가 아닌 여러 가지 라이브러리를 추가로 쓰기 시작하면, tag자체(component)가 본디의 javascript event를 막아놓거나 없애놓은 경우도 있고, emit으로 인해 발생된 event만을 듣게 되어있을 수도 있다. 이럴 경우 내가 javascript의 기본 이벤트를 쓰기를 원하면 방법이 없기 때문에 .native를 써주면 이런 설정을 무시하고 내가 원하는 기본 이벤트를 일으켜줄 수 있다.
    - 혹은 보간법(interpolation)을 이용하여 넣을 수도 있다. ex) `{{ message }}`
 
