@@ -149,7 +149,7 @@ class CommentForm(forms.ModelForm):
   - 이 명령어 DTL에서도 알아듣는다.
   
   - ```python
-  article.comment_set.all()
+    article.comment_set.all()
     ```
 
 ### many to many relationship(m:n)
@@ -236,7 +236,7 @@ views.py
 def likes(request, article_pk):
     if request.user.is_authenticated:
         article = get_object_or_404(Article, pk=article_pk)
-        if article.like_users.filter(pk=request.user.pk).exists(): # 존재하는지 여부만을 알아오는 쿼리셋이다. 이렇게 하면 훨씬 빠르다. 왜냐하면 죄다 검색해서 가져오는 것도 아니고 있기만 하면 바로 True로 가져온다는 점과, 가져왔을 때 in으로 찾는 것 또한 n짜리 작업이기 때문이다. 추가적으로 exists는 cachy에 쿼리를 저장하지 않기 때문에 메모리면에서도 효율적이다.
+        if article.like_users.filter(pk=request.user.pk).exists(): # 존재하는지 여부만을 알아오는 쿼리셋이다. 이렇게 하면 훨씬 빠르다. 왜냐하면 죄다 검색해서 가져오는 것도 아니고 있기만 하면 바로 True로 가져온다는 점과, 가져왔을 때 in으로 찾는 것 또한 n짜리 작업이기 때문이다. 추가적으로 exists는 cache에 쿼리를 저장하지 않기 때문에 메모리면에서도 효율적이다.
             article.like_users.remove(request.user)
         else:
             article.like_users.add(request.user)
