@@ -5,6 +5,8 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 
 대체로 appname.major_change_count.minor_change_count.patch_or_bugfix_count
 
+앵글러 스탠다드를 쓰는 것도 괜찮다.
+
 ## 시작
 - `git init` : 폴더를 깃에 올릴 수 있는 폴더로 변경
 - `git remote add origin 'https~'` : 온라인 상의 주소를 origin이라는 이름으로 저장
@@ -89,6 +91,8 @@ git은 버전 관리 프로그램이므로 결국 버전 자체를 쓰는 컨벤
 	- 위의 병합을 사용했을 때 각 branch의 commit들을 모두 가지고 오고 시간순으로 배열해 보여줌.
 - `git switch(checkout) 'branchname'` :  branch와 master를 이동할 때 사용(switch와 checkout 둘 다 같은 명령어지만 git이 버전 업데이트를 하면서 이름이 좀 바뀐 것 뿐이다. 둘 다 사용 가능하다.)
 - `git switch -c 'branchname'` : 생성과 동시에 이동
+- `git stash` : 현재 브랜치의 변경사항을 임시로 다른 브랜치에 저장해놓을 수가 있다. 이 상황에서는 브랜치를 변경할 수 있다.
+- `git stash pop` : 임시로 저장해놓은 변경사항을 현재 브랜치로 다시 가져올 수 있다.
 
 ## git 폴더 관련
 
