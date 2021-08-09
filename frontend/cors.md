@@ -10,7 +10,7 @@ Using the current latest chrome **Version 92.0.4515.107 (Official Build) (64-bit
 **windows :** click the start button then copy paste the below (change the ***D:\temp*** to your liking).:
 
 ```js
-chrome.exe  --disable-site-isolation-trials --disable-web-security --user-data-dir="D:\temp"
+chrome.exe  --disable-site-isolation-trials --disable-web-security --user-data-dir="C:~\temp"
 ```
 
 **Linux :** start a terminal then run the below command (change the **~/tmp** directory to your liking)
