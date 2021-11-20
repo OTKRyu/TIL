@@ -5,7 +5,7 @@
 - dom 조작(document object model)
   - html 조작
 - bom 조작(browser object model)
-  - scereen, location, xhr등등
+  - screen, location, xhr등등
 - javascript core(프로그래밍 언어로서의 기능)
   - 데이터 구조, 배열, 반복 등등
 
