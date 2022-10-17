@@ -53,7 +53,7 @@ dynamic web application program
     - SESSION_COOKIE_AGE: 이 항목의 경우 장고가 내장하고 있는 세션 발급 기능을 쓸 때 세션을 얼마나 길게 유지할 지를 설정해 줄 수 있다. 
 - `urls.py` : 사용자의 요청을 받을 때 쓰는 파일로, url을 지정해준다.
   - urlpatterns라는 리스트가 url들을 가지고 있다. 기본적으로 관리자용 url은 지정되어있다.
-  - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다. 기본적으로 view와 직접 연결을 하는 것과 가능하나, app이 많in아질 경우 masterapp에서 이를 다 연결해놓는 것은 유지 보수 측면에서 좋지 않으므로 include함수를 이용해 각 앱의 ulrs.py로 옮기는 역할을 더 많이 한다.
+  - 추가할 때는 형식에 맞춰 path(sitename, sitename에 맞는 view 함수를 호출할 주소)로 적는다. 기본적으로 view와 직접 연결을 하는 것과 가능하나, app이 많아질 경우 masterapp에서 이를 다 연결해놓는 것은 유지 보수 측면에서 좋지 않으므로 include함수를 이용해 각 앱의 ulrs.py로 옮기는 역할을 더 많이 한다.
 - `templates` : 앱에 들어갈 base templates를 놓는 곳으로 다른 앱들에서 공통으로 쓸  templates를 가져다놓는다. 이 폴더는 앱과는 다르게 장고가 이를 인식하지 못한다. 즉 새로 경로를 설정해줘야만한다. 이 경로를 설정할 때 settings.py에서 `TEMPLATES`의 `DIRS`에 BASE_DIR/'firstpjt'/'templates' 처럼 추가를 해줘야한다. 이 `DIRS`는 그 아래에 있는 `APP_DIRS`가 찾을 templates폴더 외에 것을 찾을 목록에 추가하는 역할을 한다. 여기서 `BASE_DIR`은 프로젝트 생성시의 모든 걸 담고 있는 폴더를 의미하고, 절대 경로가 바뀌더라도 프로젝트 루트의 위치를 그때마다 잡아주는 역할을 한다. 관습적으로 마스터 앱이나 혹은 프로젝트 root에 만드는 편이다.
 
 ### app(이름은 꼭 '복수형'으로, 생성(startapp) 후에 등록할 것)
